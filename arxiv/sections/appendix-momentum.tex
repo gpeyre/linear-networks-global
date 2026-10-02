@@ -1,0 +1,450 @@
+% !TEX root = ../main.tex
+% Section: Appendix: Tightened Conditional Momentum Rates
+
+\section{Tightened Conditional Momentum Rates}
+\label{app:tightened-conditional-momentum}\label{app:momentum-details}
+
+This appendix sharpens Lemma~\ref{lem:conditional}. It gives the exact
+optimizer within the same Lyapunov estimates, the simpler parameter
+choice used in the numerical figures, and the corresponding global
+bootstrap with its energy prefactor.
+
+\begin{proposition}[Tightened conditional energy decay]
+\label{prop:tightened-conditional-momentum-pl}\label{prop:tightened}
+Under the loss and position bounds of Lemma~\ref{lem:conditional} on
+$[0,T]$, fix $\eta\in(0,1)$ and $\varepsilon>0$. With its constants
+$\mathfrak K,\mathfrak L,\rho$, set
+\begin{align}
+ q&:=\varepsilon\sqrt{\mathfrak L/2},\label{eq:tightened-momentum-q-definition}\\
+ r_{\varepsilon,\eta}
+ &:=\min\{\varepsilon(1-\eta)\mathfrak K,\,
+          2\gamma-\varepsilon(\rho+\gamma^2/(2\eta))\},\label{eq:tightened-momentum-dissipation-definition}\\
+ \lambda_{\varepsilon,\eta}
+ &:=r_{\varepsilon,\eta}/(1+q).\label{eq:tightened-momentum-rate-definition}
+\end{align}
+If $q<1$ and $r_{\varepsilon,\eta}>0$, the corrected energy
+$\mathcal V_t:=\cE_t+\varepsilon\dot\Delta_t$ satisfies, for $0\le t\le T$,
+\begin{align}
+ (1-q)\cE_t&\le\mathcal V_t\le(1+q)\cE_t,\label{eq:tightened-momentum-lyapunov-equivalence}\\
+ \mathcal V_t&\le\mathcal V_0e^{-\lambda_{\varepsilon,\eta}t},\label{eq:tightened-conditional-momentum-rate}\\
+ \ell(\Svu_t)-\ell_\star
+ &\le\cE_t\le\frac{\mathcal V_0}{1-q}e^{-\lambda_{\varepsilon,\eta}t}
+ \le\frac{1+q}{1-q}\cE_0e^{-\lambda_{\varepsilon,\eta}t}.\label{eq:tightened-conditional-momentum-loss-rate}
+\end{align}
+If $\dot\Delta_0=0$, the first energy prefactor is $\cE_0/(1-q)$.
+\end{proposition}
+
+\begin{proof}
+The force bounds \eqref{eq:conditional-force-bounds} give
+$|\dot\Delta|\le\sqrt{2\mathfrak L\Delta\mathcal{K}}
+\le\sqrt{\mathfrak L/2}\,\cE$, proving the equivalence.
+For the derivative, use $\dot{\cE}=-2\gamma\mathcal{K}$,
+$\ddot\Delta\le\rho\mathcal{K}-\mathcal N-\gamma\dot\Delta$, and Young's inequality:
+\begin{equation}\label{eq:tightened-momentum-parameterized-young}
+ \gamma|\dot\Delta|\le\gamma\sqrt{2\mathcal{K}\mathcal N}
+ \le\eta\mathcal N+\frac{\gamma^2}{2\eta}\mathcal{K}.
+\end{equation}
+Since $\mathcal N\ge\mathfrak K\Delta$, this yields
+\[
+ \dot{\mathcal V}
+ \le-\varepsilon(1-\eta)\mathcal N
+     -[2\gamma-\varepsilon(\rho+\gamma^2/(2\eta))]\mathcal{K}
+ \le-r_{\varepsilon,\eta}\cE
+ \le-\lambda_{\varepsilon,\eta}\mathcal V.
+\]
+Integrate on $[0,T]$ and use the equivalence once more.
+\end{proof}
+
+\begin{proposition}[Optimal rate within the Lyapunov bounds]
+\label{prop:optimal-tightened-conditional-momentum-rate}
+Under Proposition~\ref{prop:tightened}, fix $\eta\in(0,1)$ and write
+\begin{equation}\label{eq:tightened-momentum-A-B-definition}
+ A_\eta:=(1-\eta)\mathfrak K,\qquad
+ B_\eta:=\rho+\gamma^2/(2\eta).
+\end{equation}
+The unique maximizing correction at fixed $\eta$ is admissible and gives
+\begin{align}
+ \varepsilon_\eta^\star&=\frac{2\gamma}{A_\eta+B_\eta},\label{eq:tightened-momentum-optimal-epsilon}\\
+ q_\eta^\star&:=\varepsilon_\eta^\star\sqrt{\mathfrak L/2}<1,\label{eq:tightened-momentum-optimal-q}\\
+ \lambda_\eta&:=\frac{2\gamma A_\eta}
+ {A_\eta+B_\eta+\gamma\sqrt{2\mathfrak L}}.\label{eq:tightened-momentum-fixed-eta-rate}
+\end{align}
+The unique maximizer over $\eta$ and its rate are
+\begin{align}
+ \eta_\star&=\frac{\gamma}
+ {\gamma+\sqrt{\gamma^2+2\rho+2\gamma\sqrt{2\mathfrak L}}}
+ \in(0,1/2),\label{eq:tightened-momentum-optimal-eta}\\
+ \lambda_\star&:=\max_{0<\eta<1}\lambda_\eta
+ =\frac{2\gamma\mathfrak K}
+ {\mathfrak K+\frac12
+ (\gamma+\sqrt{\gamma^2+2\rho+2\gamma\sqrt{2\mathfrak L}})^2}.\label{eq:tightened-momentum-optimal-rate}
+\end{align}
+\end{proposition}
+
+\begin{proof}
+At fixed $\eta$, the rate is the minimum of
+$\varepsilon A_\eta/(1+\varepsilon\sqrt{\mathfrak L/2})$ and
+$(2\gamma-\varepsilon B_\eta)/(1+\varepsilon\sqrt{\mathfrak L/2})$.
+The first is strictly increasing and the second strictly decreasing,
+so their intersection gives the unique optimum.
+It is admissible because
+$B_\eta>\rho+\gamma^2/2\ge\gamma\sqrt{2\rho}
+\ge\gamma\sqrt{2\mathfrak L}$, hence $q_\eta^\star<1$;
+both dissipation terms there equal $\varepsilon_\eta^\star A_\eta>0$.
+
+For the remaining optimization, set
+$\widetilde\rho:=\rho+\gamma\sqrt{2\mathfrak L}$ and divide numerator
+and denominator of \eqref{eq:tightened-momentum-fixed-eta-rate} by $1-\eta$.
+Maximizing the rate is equivalent to minimizing
+$(\widetilde\rho+\gamma^2/(2\eta))/(1-\eta)$.
+Its derivative has the sign of
+$\widetilde\rho\eta^2+\gamma^2\eta-\gamma^2/2$, which increases strictly
+and vanishes only at \eqref{eq:tightened-momentum-optimal-eta}.
+The quotient there is
+$\frac12(\gamma+\sqrt{\gamma^2+2\widetilde\rho})^2$, proving the formula.
+\end{proof}
+
+The numerical figures use the simpler admissible choice
+\begin{equation}\label{eq:tightened-momentum-eta-approx}
+ \eta_{\mathrm{approx}}
+ :=\frac{\gamma}{\gamma+\sqrt{\gamma^2+2\rho}}\in(0,1/2).
+\end{equation}
+It minimizes $B_\eta/A_\eta$: differentiation gives
+$\rho\eta^2+\gamma^2\eta-\gamma^2/2=0$.
+Thus it optimizes the dissipation rate before accounting for the
+equivalence factor $1+q_\eta^\star$. That factor is retained in the
+following rigorous bound.
+
+\begin{corollary}[Explicit rate used in the figures]
+\label{cor:explicit-tightened-conditional-momentum-rate}\label{cor:tightened-choices}
+Under Proposition~\ref{prop:tightened}, use
+$\eta_{\mathrm{approx}}$ from \eqref{eq:tightened-momentum-eta-approx} and set
+\begin{align}
+ A_{\mathrm{approx}}&:=(1-\eta_{\mathrm{approx}})\mathfrak K,&
+ B_{\mathrm{approx}}&:=\rho+\frac{\gamma^2}{2\eta_{\mathrm{approx}}},\label{eq:tightened-momentum-explicit-A-B}\\
+ \varepsilon_{\mathrm{approx}}&:=\frac{2\gamma}{A_{\mathrm{approx}}+B_{\mathrm{approx}}},&
+ q_{\mathrm{approx}}&:=\varepsilon_{\mathrm{approx}}\sqrt{\mathfrak L/2}.\label{eq:tightened-momentum-explicit-epsilon-q}
+\end{align}
+These parameters are admissible. With
+$\mathcal V_0=\cE_0+\varepsilon_{\mathrm{approx}}\dot\Delta_0$,
+\begin{align}
+ \lambda_{\mathrm{approx}}
+ &:=\frac{\varepsilon_{\mathrm{approx}}A_{\mathrm{approx}}}
+         {1+q_{\mathrm{approx}}},\label{eq:tightened-momentum-explicit-rate}\\
+ \ell(\Svu_t)-\ell_\star
+ &\le\cE_t\le\frac{\mathcal V_0}{1-q_{\mathrm{approx}}}
+       e^{-\lambda_{\mathrm{approx}}t},\qquad 0\le t\le T.\label{eq:tightened-momentum-explicit-loss-rate}
+\end{align}
+If $\dot\Delta_0=0$, the prefactor is $\cE_0/(1-q_{\mathrm{approx}})$.
+\end{corollary}
+
+\begin{proof}
+The fixed-$\eta$ optimum in
+Proposition~\ref{prop:optimal-tightened-conditional-momentum-rate}
+is admissible for every $\eta\in(0,1)$.
+Apply Proposition~\ref{prop:tightened} with $\eta=\eta_{\mathrm{approx}}$.
+\end{proof}
+
+The approximate choice concerns only optimization: its bound is exact,
+and $\lambda_{\mathrm{approx}}\le\lambda_\star$. Neither exponent is
+claimed to be the optimal rate of the underlying training dynamics.
+
+\begin{corollary}[Global bootstrap with the correct prefactor]
+\label{cor:tightened-bootstrap}
+Under the loss and initialization hypotheses of Theorem~\ref{thm:momentum},
+choose a tube $a_s:=a_0e^{-2s}$, $b_s:=b_0e^{2s}$ and an admissible
+$(\varepsilon,\eta)$ for its constants. Put
+\[
+ \mathfrak C_0:=\frac{\cE_0+\varepsilon\dot\Delta_0}{(1-q)\cE_0}.
+\]
+If $\cE_0>0$ and
+\begin{equation}\label{eq:tightened-bootstrap}
+ \frac2{\lambda_{\varepsilon,\eta}}
+ \sqrt{\frac{2\mathfrak C_0\cE_0}{a_s}}<s,
+\end{equation}
+then the tube and \eqref{eq:tightened-conditional-momentum-loss-rate} hold globally.
+A sufficient condition using only initial position bounds and total
+energy replaces $\mathfrak C_0$ by $(1+q)/(1-q)$.
+\end{corollary}
+\begin{proof}
+Within the initial connected positive-position chart,
+$\int_0^t\norm D_{\op}\le\int_0^t\sqrt{2\cE_r/a_s}\,\dd r$.
+Proposition~\ref{prop:tightened} bounds this by the left side of
+\eqref{eq:tightened-bootstrap}. The strict first-exit proof of
+Theorem~\ref{thm:momentum} then applies unchanged. Initial positivity and
+the Lyapunov equivalence imply $1\le \mathfrak C_0\le(1+q)/(1-q)$.
+\end{proof}
+
+\paragraph{The role of the prefactor.}
+A faster conditional exponent must be accompanied by its own prefactor
+when testing the global deformation budget.
+The sharper state-dependent prefactor uses the initial loss derivative
+$\dot\Delta_0=\langle E_0,\Sigma^{qu}_0+\Sigma^{vp}_0\rangle$
+as well as total energy. In particular, zero predictor speed gives
+$\mathfrak C_0=1/(1-q)$. The parameter-only prefactor uses no extra initial derivative.
+Maximizing the conditional exponent alone need not minimize the global
+budget: the same choice of parameters also changes $q$ and hence the
+prefactor. The closed-form optimizer should therefore be tested in
+\eqref{eq:tightened-bootstrap}, not substituted there with an unchanged
+prefactor.
+
+\section{Large-Position-Scale Certificate Asymptotics}
+\label{app:large-position-scale-certificate}\label{app:large-position-scale}
+\label{subsec:large-position-scale-certificate}
+
+Increasing position variance can open a damping window without reducing
+the initial loss gap. We quantify that tradeoff and the best rates
+certified by the same bootstrap.
+For the two-scale white initialization of
+Corollary~\ref{cor:two-scale-white-window}, the initial mechanical excess
+energy is
+\[
+\cE_0
+=
+\ell(0)-\ell_\star+\frac{m\sigma_{qp}^2}{2}.
+\]
+This quantity is fixed when \(\sigma_{qp}\) is fixed and
+\(\sigma_{vu}\to+\infty\).  It is useful to name the bootstrap gap
+\[
+\mathfrak G_s(\gamma):=\mathfrak S_s(\gamma)-s,
+\qquad
+s_{\mathrm{cert}}(\gamma)
+:=
+\inf\{s>0:\mathfrak G_s(\gamma)<0\}.
+\]
+Whenever this set is nonempty, define the corresponding boundary rate by
+\[
+\lambda_{\mathrm{cert}}(\gamma)
+:=
+\lambda_{s_{\mathrm{cert}}(\gamma)}(\gamma),
+\]
+using continuity in \(s\).  The strict bootstrap condition need not hold at
+the boundary itself: the theorem applies at interior budgets
+\(s>s_{\mathrm{cert}}\) with \(\mathfrak G_s(\gamma)<0\), whose rates approach
+this boundary value.  Thus \(\lambda_{\mathrm{cert}}\) is a limiting supremal
+certificate, rather than a rate asserted at a possibly nonadmissible boundary
+point.
+Define also the largest damping for which the bootstrap window is nonempty:
+\[
+\gamma^{\mathrm{cert}}_{\max}(\sigma_{vu})
+:=
+\sup\{\gamma>0:\text{ there exists }s>0
+\text{ such that }\mathfrak G_s(\gamma)<0\}.
+\]
+
+The assumption \(\cE_0>0\) below excludes only the trivial zero-excess
+case, in which both the predictor loss gap and kinetic energy vanish and the
+trajectory is stationary.
+
+\paragraph{Explicit damping interval and feasibility.}
+At a fixed deformation budget, admissibility reduces to a quadratic
+inequality, making both damping boundaries explicit.
+For \(\cE_0>0\) and fixed deformation budget \(s>0\), write
+\begin{equation}\label{eq:window}
+ c_s:=\frac{s\kappa a_s^{3/2}}{4\sqrt{3\cE_0/2}}.
+\end{equation}
+The theorem's strict certificate is exactly
+\(2\gamma^2-c_s\gamma+\rho_s<0\), or
+\begin{equation}\label{eq:window-roots}
+ c_s^2>8\rho_s,\qquad
+ \frac{c_s-\sqrt{c_s^2-8\rho_s}}4<\gamma<
+ \frac{c_s+\sqrt{c_s^2-8\rho_s}}4.
+\end{equation}
+These are sufficient boundaries, not instability thresholds.
+
+
+\paragraph{Optimizing feasibility.}
+To make this interval nonempty as easily as possible, maximize
+\begin{equation}\label{eq:budget}
+ \frac{c_s^2}{8\rho_s}
+ =\frac{s^2\kappa^2a_0^3e^{-6s}}
+ {192\cE_0(4b_0Le^{2s}+2\sqrt{2L\cE_0})}.
+\end{equation}
+Its unique maximizer $s_{\rm feas}$ belongs to $(1/4,1/3)$ and satisfies
+\begin{equation}\label{eq:best-budget}
+ \frac1{s_{\rm feas}}
+ =3+\frac{4b_0Le^{2s_{\rm feas}}}
+ {4b_0Le^{2s_{\rm feas}}+2\sqrt{2L\cE_0}}.
+\end{equation}
+For a proof, write the denominator term as $Ae^{2s}+B$, with $A,B>0$.
+The logarithmic derivative is $2/s-6-2Ae^{2s}/(Ae^{2s}+B)$, and its
+derivative is $-2/s^2-4ABe^{2s}/(Ae^{2s}+B)^2<0$.
+It changes sign between $1/4$ and $1/3$. The resulting scalar equation
+is explicit and uniquely solvable; no trajectory has to be computed.
+This budget optimizes \emph{nonemptiness}, not the upper damping endpoint
+or the decay exponent. Those are different optimization questions.
+
+
+\paragraph{Asymptotic certificate bounds.}
+The large-position limit distinguishes fixed-damping behavior from the
+largest damping that the certificate can accommodate.
+\begin{proposition}[Large-position-scale certificate asymptotics]
+\label{prop:large-position-scale-certificate}\label{prop:large-position}
+For the two-scale white initialization above, fix \(\sigma_{qp}\ge0\), assume
+\(\cE_0>0\), and
+let \(\sigma_{vu}\to+\infty\).  For each fixed \(\gamma>0\) and fixed
+\(s>0\),
+\[
+\mathfrak S_s(\gamma)
+=
+\frac{16Le^{5s}}{\kappa\gamma\,\sigma_{vu}}
+\sqrt{\frac{3\cE_0}{2}}
++O(\sigma_{vu}^{-3}).
+\]
+The expansion is uniform for \(s\) in bounded sets.  Consequently,
+\[
+s_{\mathrm{cert}}(\gamma)
+=
+\frac{16L}{\kappa\gamma\,\sigma_{vu}}
+\sqrt{\frac{3\cE_0}{2}}
++o(\sigma_{vu}^{-1}),
+\]
+and
+\[
+\lambda_{\mathrm{cert}}(\gamma)
+=
+\frac{\kappa\gamma}{4L}
+\;-\;
+\frac{16}{\sigma_{vu}}\sqrt{\frac{3\cE_0}{2}}
++o(\sigma_{vu}^{-1}).
+\]
+Moreover, the upper damping boundary satisfies
+\[
+\gamma^{\mathrm{cert}}_{\max}(\sigma_{vu})
+=
+\frac{\kappa\sigma_{vu}^3}
+{24e\sqrt{3\cE_0/2}}
+\bigl(1+o(1)\bigr).
+\]
+\end{proposition}
+
+\begin{proof}
+For fixed $\gamma>0$, the exact expression \eqref{eq:certificate}
+can be expanded directly. Since
+\[
+\rho_s=4L\sigma_{vu}^2e^{2s}
++2\sqrt{2L\cE_0},
+\]
+we have
+\[
+\lambda_s(\gamma)
+=
+\frac{\kappa\gamma}{4Le^{4s}}
++O(\sigma_{vu}^{-2}).
+\]
+Substituting this into the definition of \(\mathfrak S_s(\gamma)\), with
+\(a_s=\sigma_{vu}^2e^{-2s}\), gives the first expansion.
+Write
+\[
+c_0:=\frac{16L}{\kappa\gamma}
+\sqrt{\frac{3\cE_0}{2}}.
+\]
+The expansion is uniform near \(s=0\).  Thus every
+\(s=c/\sigma_{vu}\), with \(c>0\) fixed, satisfies
+\[
+\mathfrak G_s(\gamma)
+=\frac{c_0-c}{\sigma_{vu}}+o(\sigma_{vu}^{-1}),
+\]
+uniformly when \(c\) ranges over a compact set.  Hence budgets whose leading
+constant is below \(c_0\) are inadmissible, whereas those whose leading
+constant is strictly above \(c_0\) are admissible for all sufficiently large
+\(\sigma_{vu}\).  This proves the displayed expansion for
+\(s_{\mathrm{cert}}(\gamma)\).  Evaluating
+\[
+\lambda_s(\gamma)
+=
+\frac{\kappa\gamma}{4L}e^{-4s}
++O(\sigma_{vu}^{-2})
+\]
+at \(s=s_{\mathrm{cert}}(\gamma)\) gives the expansion for
+\(\lambda_{\mathrm{cert}}(\gamma)\).
+
+It remains to identify the high-damping boundary.  First observe the exact
+upper bound
+\[
+\lambda_s(\gamma)
+=\frac{a_s\kappa\gamma}{\rho_s+2\gamma^2}
+\le\frac{\kappa\sigma_{vu}^2e^{-2s}}{2\gamma}.
+\]
+Consequently every admissible pair satisfies
+\[
+\mathfrak S_s(\gamma)
+\ge
+\frac{8\gamma e^{3s}}{\kappa\sigma_{vu}^3}
+\sqrt{\frac{3\cE_0}{2}},
+\]
+and hence
+\[
+\gamma
+<
+\frac{\kappa\sigma_{vu}^3}{8\sqrt{3\cE_0/2}}\,s e^{-3s}
+\le
+\frac{\kappa\sigma_{vu}^3}{24e\sqrt{3\cE_0/2}}.
+\]
+This proves the required asymptotic upper bound uniformly over all budgets,
+not only over bounded \(s\).
+
+For the matching lower bound, take \(\gamma\) of order
+\(\sigma_{vu}^3\) and keep \(s\) in a compact subset of \((0,+\infty)\).
+Then $2\gamma^2$ dominates $\rho_s$ in \eqref{eq:certificate}, and
+\[
+\lambda_s(\gamma)
+=
+\frac{\kappa\sigma_{vu}^2e^{-2s}}{2\gamma}
+\bigl(1+o(1)\bigr).
+\]
+Consequently,
+\[
+\mathfrak S_s(\gamma)
+=
+\frac{8\gamma e^{3s}}{\kappa\sigma_{vu}^3}
+\sqrt{\frac{3\cE_0}{2}}
+\bigl(1+o(1)\bigr),
+\]
+so the condition \(\mathfrak S_s(\gamma)<s\) is asymptotically equivalent to
+\[
+\gamma
+<
+\frac{\kappa\sigma_{vu}^3}{8\sqrt{3\cE_0/2}}\,
+s e^{-3s}.
+\]
+The right-hand side is maximized at \(s=1/3\).  Choosing this budget and any
+fixed multiplicative factor below the maximum gives an admissible pair for all
+sufficiently large \(\sigma_{vu}\), proving the matching lower bound and the
+claimed asymptotic formula.
+\end{proof}
+
+Proposition~\ref{prop:large-position-scale-certificate} has two complementary
+messages.  At fixed damping, increasing the initial position scale makes the
+certified ellipticity deformation vanish and the certified rate converges to
+\(\kappa\gamma/(4L)\).  At fixed \(\sigma_{vu}\), however, this
+particular bootstrap theorem cannot certify arbitrarily large damping: the
+admissible region in \((s,\gamma)\) eventually disappears, with the upper
+edge scaling like \(\sigma_{vu}^3\).  This is a limitation of the certificate,
+not a claim that the underlying damped dynamics fail in the large-damping
+regime.
+
+\begin{figure}[t]
+  \centering
+  \def\mathdefault#1{#1}
+  \subimport{figures/}{momentum_bootstrap_lambda_multi_sigma.pgf}
+\caption{
+Limiting bootstrap rate at the admissibility boundary as a function of $\gamma$ for several initial position
+scales $\sigma_{vu}$.
+Solid curves are obtained by grid-searching the bootstrap certificate
+for the boundary value \(\lambda_{s_{\mathrm{cert}}}(\gamma)\); rates at
+strictly admissible nearby budgets approach these curves.  The dotted black curve is
+the large-\(\sigma_{vu}\) limiting rate \(\kappa\gamma/(4L)\).  The
+plot uses \((d_u, d_v) = (3, 2)\), \(\kappa=L=1\), \(\sigma_{qp}=1\), and
+\(\Delta_0=\ell(0)-\ell_\star=1\).
+For scales whose upper damping boundary lies within the scanned range, markers show numerical and asymptotic approximations to the maximal admissible damping and its corresponding boundary rate.
+}
+\label{fig:momentum-bootstrap-lambda-multi-sigma}\label{fig:momentum-boundary}
+\end{figure}
+
+\FloatBarrier
+
+%%% Local Variables:
+%%% mode: LaTeX
+%%% TeX-master: "../main"
+%%% End:

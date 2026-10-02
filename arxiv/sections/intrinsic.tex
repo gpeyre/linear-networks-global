@@ -1,0 +1,184 @@
+\section{Intrinsic dynamics}\label{app:intrinsic}
+Special conserved spectral values express some covariance blocks in terms
+of fewer variables. This appendix derives these exact reductions.
+
+\subsection{A two-point signed spectrum: hyperbolic isotropy}
+A special two-point spectrum determines the hidden covariance blocks
+from the predictor and therefore closes a smaller equation.
+\begin{definition}[Hyperbolic isotropy]\label{def:hyperbolic-isotropy}
+For \(\alpha>0\), the hyperbolically isotropic (HI) leaf is
+\begin{equation}\label{eq:intrinsic-hi}
+ \mathcal M_\alpha:=\{\Sigma\succeq0:\Sigma J\Sigma=\alpha^2J\}.
+\end{equation}
+\end{definition}
+The identity forces $\Sigma\succ0$ and is equivalent to
+$(J\Sigma)^2=\alpha^2\Id_m$. The symmetric representative of $J\Sigma$
+then has $d_u$ eigenvalues $+\alpha$ and $d_v$ eigenvalues $-\alpha$;
+equivalently, $\mathcal H_k=\alpha^k(d_u+(-1)^kd_v)$ for $k=1,\ldots,m$.
+Spectral conservation proves invariance of $\mathcal M_\alpha$ despite
+the repeated eigenvalues. Directly, the derivative of $\Sigma J\Sigma$
+is $-G(\Sigma J\Sigma)-(\Sigma J\Sigma)G$, with constant solution $\alpha^2J$.
+
+\begin{proposition}[Predictor-only intrinsic equation]\label{prop:intrinsic-hi}
+Every predictor \(\Svu\in\R^{d_v\times d_u}\) has a unique covariance
+on \(\mathcal M_\alpha\), given by
+\begin{equation}\label{eq:intrinsic-graph}
+ \Sigma=
+ \begin{pmatrix}
+ ((\Svu)^\top\Svu+\alpha^2\Id_{d_u})^{1/2}&(\Svu)^\top\\
+ \Svu&(\Svu(\Svu)^\top+\alpha^2\Id_{d_v})^{1/2}
+ \end{pmatrix}.
+\end{equation}
+On this leaf, the Bures dynamics close on the predictor:
+\begin{equation}\label{eq:intrinsic-hyperbolic-dynamics}
+ \dot\Svu=-E((\Svu)^\top\Svu+\alpha^2\Id)^{1/2}
+       -(\Svu(\Svu)^\top+\alpha^2\Id)^{1/2}E,
+ \qquad E:=\nabla\ell(\Svu).
+\end{equation}
+For \(d_u=d_v=1\), this is
+\(\dot\Svu=-2\sqrt{(\Svu)^2+\alpha^2}\,\ell'(\Svu)\).
+\end{proposition}
+\begin{proof}
+Expanding \eqref{eq:intrinsic-hi} gives
+\[
+ (\Suu)^2-(\Svu)^\top\Svu=\alpha^2\Id,\quad
+ (\Svv)^2-\Svu(\Svu)^\top=\alpha^2\Id,\quad
+ \Svu\Suu=\Svv\Svu.
+\]
+Positivity selects the positive square roots. Conversely, an SVD proves
+the intertwining identity and gives eigenvalues \(\alpha\) and
+\(\sqrt{\sigma_i^2+\alpha^2}\pm\sigma_i>0\), proving membership in
+\(\mathcal M_\alpha\). Substituting the diagonal blocks into
+\eqref{eq:block-flow-general} gives the intrinsic equation.
+\end{proof}
+The same eigenvalue calculation gives the exact extremal envelopes
+\[
+ \lambda_{\max}(\Sigma)=\sqrt{\norm{\Svu}_{\op}^2+\alpha^2}
+                         +\norm{\Svu}_{\op},\qquad
+ \lambda_{\min}(\Sigma)=\frac{\alpha^2}{\lambda_{\max}(\Sigma)}.
+\]
+In the general convergence theorems this special spectral level has
+\(\aplus{\Sigma_0}=\aminus{\Sigma_0}=\alpha\). Thus its loss exponent is \(4\alpha\kappa\),
+and the GD contraction factor is \(1-\sqrt2\alpha\kappa\tau\).
+
+\paragraph{Finite-width form.}
+The covariance constraint has an exact finite-width form that depends
+only on the product $WW^\top$.
+For \(\Sigma=WW^\top/n\), condition \eqref{eq:intrinsic-hi} is
+\(WW^\top JWW^\top=n^2\alpha^2J\). In terms of \(U,V\), it reads
+\[
+ \begin{gathered}
+ (UU^\top)^2-UV^\top VU^\top=n^2\alpha^2\Id_{d_u},\qquad
+ (VV^\top)^2-VU^\top UV^\top=n^2\alpha^2\Id_{d_v},\\
+ VU^\top UU^\top=VV^\top VU^\top.
+ \end{gathered}
+\]
+Any covariance in \eqref{eq:intrinsic-graph} admits empirical factors at
+every width \(n\ge m\), for example \(W=\sqrt n\,\Sigma^{1/2}Q_0\)
+with \(Q_0Q_0^\top=\Id_m\).
+
+\paragraph{Comparison with relaxed balance.}
+\citet[Theorem 3.8]{MarcottePeyreGribonval2026} derive intrinsic dynamics
+under a different condition,
+\(\Gamma_{\rm rb}:=(V^\top V-U^\top U)/n=\beta\Id_n\),
+on a full-column-rank stratum. It implies
+\[
+ (\Suu)^2+\beta\Suu=(\Svu)^\top\Svu,\qquad
+ (\Svv)^2-\beta\Svv=\Svu(\Svu)^\top.
+\]
+For \(\beta\ne0\), zero singular directions have ambiguous branches.
+Where both factors have full column rank, the range projectors
+\(\Pi_u,\Pi_v\) of \((\Svu)^\top,\Svu\) select
+\[
+ \begin{aligned}
+ \Suu&=\Pi_u[-\tfrac\beta2\Id+
+             ((\Svu)^\top\Svu+\tfrac{\beta^2}{4}\Id)^{1/2}],\\
+ \Svv&=\Pi_v[\tfrac\beta2\Id+
+             (\Svu(\Svu)^\top+\tfrac{\beta^2}{4}\Id)^{1/2}].
+ \end{aligned}
+\]
+If \(n=d_u=d_v\) and both factors are invertible, the projectors are
+identities and the predictor equation coincides with
+\eqref{eq:intrinsic-hyperbolic-dynamics} for \(\alpha=|\beta|/2\).
+The leaves remain distinct: for \(\beta\ne0\), relaxed balance is equivalent to
+\(\Sigma J\Sigma=-\beta\Sigma\), \(\rankop\Sigma=n\).
+Indeed a left inverse of \(W/\sqrt n\) proves the converse.
+It forces \(n\le d_v\) if \(\beta>0\), and \(n\le d_u\) if \(\beta<0\);
+positive HI instead has rank \(m\).
+For \(\beta=0\), positivity selects the unshifted square roots without a
+rank assumption, giving the boundary equation \(\alpha=0\), not a
+positive-definite initialization.
+Without the rank qualifications, relaxed balance does not ensure
+predictor closure: \(n=1,d_u=d_v=2,U=0,V=e_1\) or \(e_2\) gives the
+same predictor and \(\beta=1\), but different predictor velocities for
+\(\ell(S):=\norm{S+\Id_2}_{\F}^2/2\).
+
+\begin{remark}[Conserved values do not generally close the predictor]
+For \(d_u=d_v=2\), take \(\Svu=0\), \(\Svv=\diag(3,4)\), and
+\(\Suu=\diag(1,2)\) or \(\diag(2,1)\).
+Both states have signed spectrum \(\{1,2,-3,-4\}\), hence the same
+spectral laws. For \(\ell(S):=\norm{S+e_1e_1^\top}_{\F}^2/2\),
+their predictor velocities are \(-4e_1e_1^\top\) and
+\(-5e_1e_1^\top\).
+The special two-point spectrum gives an algebraic graph unavailable
+at these general spectral values.
+\end{remark}
+
+\subsection{A single phase spectral scale: conformal symplectic isotropy}
+A special conformal spectral identity eliminates the velocity covariance
+within a positive-position chart of the phase flow.
+\begin{definition}[Conformal symplectic isotropy]\label{def:csi}
+A phase covariance is conformally symplectically isotropic (CSI) at
+scale \(\theta\ge0\) if
+\begin{equation}\label{eq:intrinsic-csi}
+ \Phase \Jcan\Phase=\theta^2\Jcan.
+\end{equation}
+\end{definition}
+For $\theta>0$, this forces $\Phase\succ0$ and is equivalent to
+$\Phase^{1/2}\Jcan\Phase^{1/2}$ having $m$ copies of each eigenvalue
+$+i\theta,-i\theta$.
+The renormalized trace powers in Proposition~\ref{prop:phase-laws}
+are zero at odd orders and $2m(-1)^k\theta_0^{2k}$ at order $2k$.
+Conformal transport preserves \eqref{eq:intrinsic-csi} with
+$\theta_t=e^{-\gamma t}\theta_0$, including the singular boundary
+$\theta_0=0$, which is specified algebraically, without diagonalizability.
+
+\begin{proposition}[Reduced phase dynamics]\label{prop:intrinsic-csi}
+On the chart \(A:=\Spos\succ0\), condition \eqref{eq:intrinsic-csi}
+is equivalent to
+\[
+ D=C=C^\top,\qquad Q=\theta^2A^{-1},
+ \qquad \Xi=AC,\quad \Svel=CAC+\theta^2A^{-1}.
+\]
+The reduced equations are
+\begin{equation}\label{eq:csi-reduced}
+ \dot A=CA+AC,\qquad
+ \dot C=-G-\gamma C-C^2+\theta_t^2A^{-2},
+ \qquad\dot\theta_t=-\gamma\theta_t.
+\end{equation}
+They use only the two symmetric matrices \(A,C\), with known scale
+\(\theta_t\), instead of all blocks of the phase covariance.
+\end{proposition}
+\begin{proof}
+Substitute \(\Xi=AD^\top\), \(\Svel=DAD^\top+Q\).
+The upper-left block of \eqref{eq:intrinsic-csi} is
+\(A(D-D^\top)A=0\), forcing symmetry.
+The upper-right block then becomes \(AQ=\theta^2\Id\);
+the other blocks follow.
+Substitution in Proposition~\ref{prop:regression} gives
+\eqref{eq:csi-reduced}. This calculation includes \(\theta=0\).
+\end{proof}
+White position and velocity blocks with \(\Xi_0=0\) give
+\(\theta_0=\sigma_{vu}\sigma_{qp}\). Zero velocity gives
+\(C_0=0,\theta_0=0\), allowing any \(A_0\succ0\).
+Neither choice is needed for convergence: the general theorem controls
+\(D\) by energy even when it is nonsymmetric and \(Q\) is independent.
+
+\begin{remark}[What the reduced state still contains]
+Even on CSI, the two cross blocks \(\Svu,\Sqp\) do not generally form a
+closed state. With \(\theta=1,C=0\), choose \(A=\Id_2\) or \(2\Id_2\)
+and \(\Svel=A^{-1}\). Both have
+\(\Svu=\Sqp=\dot\Svu=0\), yet
+\(\ddot\Svu=-2E\) or \(-4E\) for the same nonzero scalar loss gradient.
+Thus the full position block remains part of the intrinsic variables.
+\end{remark}

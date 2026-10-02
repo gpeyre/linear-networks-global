@@ -1,0 +1,174 @@
+\section{Linear Convergence of Training Dynamics}
+\label{sec:convergence}\label{sec:balanced-convergence}
+\label{sec:sampling}\label{sec:finite-width}
+
+\paragraph{Convergence of gradient flow}
+A positive conserved support gap $g(\Sigma_0) > 0$ guarantees global linear convergence for the Bures flow \eqref{eq:bures-G}, including some cases where the initial covariance $\Sigma_0$ is singular. Write $\Delta_t:=\ell(\Svu_t)-\ell_\star$ for the loss gap and $\cS_\star$ for the set of global predictor minimizers.
+
+\begin{theorem}[Global convergence from a positive support gap]\label{thm:gf}\label{thm:balanced-convergence}
+Under Assumption~\ref{ass:loss}, let $\Sigma_0\succeq0$ be a possibly
+singular covariance with $\gap{\Sigma_0}>0$. 
+Then the solution of \eqref{eq:bures-G} is global and satisfies
+\begin{equation}\label{eq:gf-rate}
+ \Delta_t\le\Delta_0e^{-2\kappa \gap{\Sigma_0}t},\qquad t\ge0.
+\end{equation}
+As $t \to \infty$, $\Sigma_t \to \Sigma_\infty\succeq0$ with
+$\rankop\Sigma_\infty=\rankop\Sigma_0$ and $\Svu_\infty\in\cS_\star$.
+The predictor $\Svu$ and any factor realization (as per \eqref{eq:mean-field-gradient-flow}) converge linearly with rate $\kappa\gap{\Sigma_0}$ in Frobenius norm.
+\end{theorem}
+
+The only nondegeneracy requirement is $\gap{\Sigma_0}>0$.
+Positive definiteness is sufficient but not necessary: $\Sigma_0\succ0$ implies $\gap{\Sigma_0}\ge2\lambda_{\min}(\Sigma_0)>0$ and then
+$\Sigma_\infty\succ0$. The exponent separates loss geometry (captured by the PL constant $\kappa$)
+from initial covariance conditioning (the support gap $\gap{\Sigma_0}$), with no extra
+dimension factor. The trajectory selects a global minimizer according to its initialization and dynamics. Proposition~\ref{prop:gf-lift-tail} supplies all explicit prefactors and bounds.
+
+\begin{comment}
+\emph{Proof sketch.}
+\emph{Conserved conditioning.}
+Proposition~\ref{lem:margins} gives
+$\Suu_t\succeq \aplus{\Sigma_0}\Id$ and $\Svv_t\succeq \aminus{\Sigma_0}\Id$ throughout the
+existence interval. The predictor equation
+$\dot\Svu_t=-E_t\Suu_t-\Svv_tE_t$ therefore has a uniformly positive
+preconditioner, with lower bound $\gap{\Sigma_0}$.
+Only the sum of the two margins must be positive; either one may vanish.
+
+\emph{Loss decay.}
+Pairing this equation with $E_t=\nabla\ell(\Svu_t)$ gives
+$-\dot\Delta_t\ge \gap{\Sigma_0}\norm{E_t}_{\F}^2$.
+The PL inequality then yields
+$-\dot\Delta_t\ge2\kappa \gap{\Sigma_0}\Delta_t$, proving \eqref{eq:gf-rate}
+on the existence interval.
+
+\emph{Global existence and convergence of the state.}
+The same dissipation estimate applied to $\sqrt{\Delta_t}$ bounds
+$\int_0^T\norm{G_t}_{\op}\,\dd t$ by
+$\gap{\Sigma_0}^{-1}\sqrt{2\Delta_0/\kappa}$, uniformly over finite existence
+intervals. Hence the fundamental matrix and its inverse remain bounded.
+Covariance congruence prevents blow-up, so the flow is global. The
+fundamental matrix converges to an invertible limit, preserving covariance
+rank. Applying the length bound from time $t$ onward gives
+exponent $\kappa \gap{\Sigma_0}$ for the remaining displacement and hence convergence
+of the covariance and factors.
+Appendix~\ref{app:gf} gives the full proof.\qed
+\end{comment}
+
+\begin{remark}[Singular covariance and predictor rank]\label{rem:singular-support}
+The initialization $\Sigma_0=\diag(\Id_{d_u},0_{d_v})$ has
+$\aplus{\Sigma_0}=1$, $\aminus{\Sigma_0}=0$, and $\gap{\Sigma_0}=1$.
+Its rank is only $d_u$, yet the theorem applies. There is no rank
+contradiction: a full-rank predictor needs rank $\min(d_u,d_v)$, not $m$.
+More generally, $\aplus{\Sigma_0}>0$ implies $\rankop\Sigma_0\ge d_u$,
+while $\aminus{\Sigma_0}>0$ implies $\rankop\Sigma_0\ge d_v$.
+The condition cannot be dropped altogether: for $d_u=d_v=2$,
+$\Sigma_0=\diag(1,0,1,0)$ and
+$\ell(S):=\norm{S-e_2e_2^\top}_{\F}^2/2$, the flow is stationary and
+nonoptimal. Here $g(\Sigma_0) = 0$, despite the nonzero signed eigenvalues $+1,-1$.
+\end{remark}
+
+\begin{remark}[Quadratic specialization]
+For $\ell(S):=\frac12\ip{\quadH[S-\Svu_\star]}{S-\Svu_\star}$ with
+$\quadH\succeq0$ a nonzero self-adjoint linear operator, the exponent is
+$2\gap{\Sigma_0}\lambda_{\min}^{+}(\quadH)$. For a full-rank isotropic initialization
+$\Sigma_0=\sigma^2\Id_m$, one has $\aplus{\Sigma_0}=\aminus{\Sigma_0}=\sigma^2$,
+giving a rate of $4\sigma^2\lambda_{\min}^{+}(\quadH)$.
+The operator $\quadH$ is allowed to have a nontrivial kernel: the predictor $\Svu$ converges to a point in
+$\Svu_\star+\kerop\quadH$. If $\quadH$ is positive definite, the predictor converges to the teacher $\Svu_\star$.
+\end{remark}
+
+For a quadratic predictor loss, Figure~\ref{fig:bures-convergence-triptych} compares the initialization scale, loss of conditioning, and the finite-width sampling we discuss next. The dotted curves use a coarse determinant-based rate, derived for comparison in Appendix~\ref{app:gf}.
+If the support gap $g(\Sigma_0)$ vanishes, trace and initial loss alone cannot guarantee a uniform positive rate (Example~\ref{ex:slow}).
+Figure~\ref{fig:smooth-lasso-triptych} in Appendix~\ref{app:smooth-lasso} provides the counterpart for a non-quadratic smoothed-Lasso predictor loss.
+
+\begin{figure}[t]
+    \centering
+    \resizebox{\linewidth}{!}{\input{figures/bures_convergence_triptych.pgf}}
+    \captionsetup{font=footnotesize,skip=2pt}
+    \caption{
+      Numerical convergence for quadratic loss with $d_u=16$, $d_v=9$, a random teacher, and whitened input.
+      \textbf{(a)} Bures flow from $\Sigma_0=\alpha\Id_m$ at several white scales. Dashed lines show the spectral-margin rate $4\alpha\kappa$ from Theorem~\ref{thm:balanced-convergence}; dotted lines show the coarse rate $4\kappa c_{\rm coarse}$ from the determinant comparison in Appendix~\ref{app:gf} (Remark~\ref{rem:coarse-rate}), using the exact initial sublevel radius $M=2\norm{\Svu_\star}_{\F}$.
+      \textbf{(b)} Rate deterioration when one matched diagonal pair of $\Sigma_0$ is scaled by $r$: $r=1$ is the white reference and $r=0$ is rank-deficient.
+      \textbf{(c)} Bures flow from the reference covariance $\tSigma_0=\Id_m$ compared with finite-width flows initialized by i.i.d. samples from $\mathcal N(0,\tSigma_0)$, for $n=32,128,512,2048$ and five independent trials.
+    }
+    \label{fig:bures-convergence-triptych}
+    \label{fig:bures-scale-sweep}
+    \label{fig:perturb-scale-sweep}
+    \label{fig:bures-finite-width-comparison}
+\end{figure}
+
+\paragraph{Convergence under finite width sampling}
+Theorem~\ref{thm:gf} applies generally to neuron law covariances with positive support gap.
+We now focus on finite-width networks, whose initial empirical covariance is $\Sigma_0:=W_0W_0^\top/n$.
+For random initialization, the goal is to make this
+empirical covariance close to a prescribed population covariance
+$\tSigma_0$, thereby retaining its support gap and convergence rate.
+Draw the columns $w_i:=(u_i,v_i)$ of $W_0:=\binom{U_0}{V_0}$ independently
+from the same \emph{subgaussian} distribution:
+$w_i:=\tSigma_0^{1/2}\xi_i$, where $\mathbb E[\xi_i\xi_i^\top]=\Id_m$ and $\sup_{\norm z=1}\norm{\langle z,\xi_i\rangle}_{\psi_2}\le K$.
+Here $\norm X_{\psi_2}:=\inf\{c>0:\mathbb E e^{X^2/c^2}\le2\}$ denotes the standard subgaussian norm \citep{Vershynin2018};
+standard Gaussian sampling has dimension-independent $K$.
+Thus $\mathbb E[w_iw_i^\top]=\tSigma_0$, whereas $\Sigma_0=W_0W_0^\top/n$ is the empirical covariance of finitely many sampled neurons.
+The loss gap along the sampled trajectory remains $\Delta_t=\ell(\Svu_t)-\ell_\star$ and we write $\widetilde\Delta_0:=\ell(\tSvu_0)-\ell_\star$ for its population reference.
+
+\begin{corollary}[Finite width preserves the population rate]
+\label{cor:finite-width}\label{thm:finite-width}
+Under Assumption~\ref{ass:loss}, let $\tSigma_0\succeq0$ with
+$\gap{\tSigma_0}>0$, set $r_0:=\rankop\tSigma_0$, and fix
+$\varepsilon,\delta\in(0,1)$.
+There is a universal $C>0$ such that, if
+\begin{equation}\label{eq:width}
+ n\ge CK^4\varepsilon^{-2}\bigl(r_0+\log(2/\delta)\bigr),
+\end{equation}
+then with probability at least $1-\delta$, it holds that 
+\((1-\varepsilon)\tSigma_0\preceq\Sigma_0 \preceq(1+\varepsilon)\tSigma_0\).
+On this event,
+$\gap{\Sigma_0}\ge(1-\varepsilon)\gap{\tSigma_0}$,
+the empirical factor flow \eqref{eq:mean-field-gradient-flow} is global, and
+\(\Delta_t\le\Delta_0e^{-2\kappa(1-\varepsilon)\gap{\tSigma_0}t}\)
+for all $t\ge0$.
+The factors $(U_t, V_t)$ converge to a limit with globally optimal predictor $\frac{1}{n} V_\infty U_\infty^\top = \Svu_\infty$.
+\end{corollary}
+
+\begin{comment}
+\emph{Proof sketch.}
+Concentration is needed only on the $r_0$-dimensional range of $\tSigma_0$.
+Expressed in an orthonormal basis of this range, the projections of the
+whitened samples $\xi_i$ have second-moment matrix $\Id_{r_0}$ and
+subgaussian bound at most $K$.
+The resulting relative covariance
+bound gives $\Sigma_0\succeq(1-\varepsilon)\tSigma_0$, hence
+$a_\pm(\Sigma_0)\ge(1-\varepsilon)a_\pm(\tSigma_0)$ and
+$\gap{\Sigma_0}\ge(1-\varepsilon)\gap{\tSigma_0}>0$.
+This positive empirical support gap supplies the hypothesis needed to apply Theorem~\ref{thm:gf}.
+Appendix~\ref{app:sampling} gives the full argument.\qed
+\end{comment}
+
+\begin{remark}[Width and initialization geometry]\label{rem:rank-adaptive-width}
+The condition $\gap{\tSigma_0}>0$ forces $r_0\ge\min(d_u,d_v)$,
+and this minimum is attainable. If $d_u\le d_v$, take
+$\tSigma_0=\diag(2\sigma^2\Id_{d_u},0_{d_v})$, $\sigma>0$:
+then $r_0=d_u$ and $\gap{\tSigma_0}=2\sigma^2$.
+With Gaussian sampling, Corollary~\ref{cor:finite-width} gives width proportional to
+$\varepsilon^{-2}(d_u+\log(2/\delta))$ and rate $4(1-\varepsilon)\kappa\sigma^2$, the same as for full-rank
+population covariance $\sigma^2\Id_m$. Here every $v_i$ starts at zero,
+so $\Svu_0=0$ and $\Delta_0=\widetilde\Delta_0$ exactly.
+Exchanging the blocks gives dependence on $\min(d_u,d_v)$ in general.
+This improvement changes the initialization: for $\tSigma_0=\sigma^2\Id_m$,
+$r_0=m$. Its empirical support gap can vanish at small width even though its
+population support gap is positive (Example~\ref{ex:white-small-width}).
+\end{remark}
+
+For the sampling scheme in Corollary~\ref{cor:finite-width}, the prefactor is
+the empirical initial loss gap $\Delta_0$, which need not equal the population
+loss gap $\widetilde\Delta_0$. Controlling it is a separate
+accuracy requirement: for isotropic Gaussian sampling and the standard quadratic loss,
+the expected excess initial error is $\sigma^4d_ud_v/(2n)$
+(Proposition~\ref{prop:gaussian}). Theorem~\ref{thm:sampling-budgets}
+gives a separate accuracy budget and a deterministic loss envelope.
+For population variance $\sigma^2 \Id_m$ and $\varepsilon=1/2$,
+the certified exponent is $2\kappa\sigma^2$.
+
+%%% Local Variables:
+%%% mode: LaTeX
+%%% TeX-master: "../main"
+%%% End:

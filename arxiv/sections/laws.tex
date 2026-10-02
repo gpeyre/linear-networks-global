@@ -1,0 +1,166 @@
+\section{Mean Field Conservation Laws}
+\label{sec:laws}\label{sec:conservation-hyperbolic}
+
+\paragraph{Gradient flow and covariance closure}
+Although training evolves all neuron weights, its effect on the
+predictor is governed by a fixed-size covariance matrix.
+We use the width-normalized gradient flow
+$(\dot U_t,\dot V_t)=-n\nabla_{(U,V)}\cL(U_t,V_t)$, namely
+\begin{equation}\label{eq:mean-field-gradient-flow}
+ \dot U_t=-E_t^\top V_t,\qquad
+ \dot V_t=-E_tU_t,\qquad E_t:=\nabla\ell(V_tU_t^\top/n).
+\end{equation}
+The factor $n$ fixes a common time scale across widths; equivalently
+this is Euclidean gradient flow of $n\cL$.
+With $W_t:=\binom{U_t}{V_t}$, define the uncentered covariance
+\[
+ \Sigma_t:=\tfrac1nW_tW_t^\top
+ =\begin{psmallmatrix}\Suu_t&\Suv_t\\\Svu_t&\Svv_t\end{psmallmatrix},
+ \qquad
+ \Suu_t:=\tfrac{U_tU_t^\top}{n},\quad
+ \Svv_t:=\tfrac{V_tV_t^\top}{n},\quad
+ \Svu_t:=\tfrac{V_tU_t^\top}{n}.
+\]
+The hidden blocks $\Suu_t,\Svv_t$ do not enter the loss, but govern
+the predictor's motion. We use the same notation $\Sigma$ whether the
+covariance is specified directly or realized by finite-width factors:
+the closed equation depends only on this matrix.
+Set
+$G_E:=\left(\begin{smallmatrix}0&E^\top\\E&0\end{smallmatrix}\right)$,
+$G_t:=G_{E_t}$, and $G(S):=G_{\nabla\ell(S)}$, so $\dot W_t=-G_tW_t$.
+The split structure of the gradient is encoded by the signature matrix
+\[
+ J:=\diag(\Id_{d_u},-\Id_{d_v}),\qquad G_tJ+JG_t=0.
+\]
+Our first result combines covariance closure with width-independent spectral conservation laws.
+\begin{proposition}[Covariance closure and conservation laws]
+\label{prop:covariance-closure-laws}
+Let $\mathcal H_k(\Sigma):=\tr\!\left((J\Sigma)^k\right)$.
+On its interval of existence, the factor flow
+\eqref{eq:mean-field-gradient-flow} closes on the covariance $\Sigma_t$ as a Bures equation, for which the characteristic polynomial of $J\Sigma$ is preserved:
+\begin{equation}\label{eq:bures-G}
+ \dot\Sigma_t=-(G_t\Sigma_t+\Sigma_tG_t), \qquad
+ \tfrac{\dd}{\dd t}\mathcal H_k(\Sigma_t)=0, \quad k=1,\ldots,m,
+\end{equation}
+\end{proposition}
+
+\begin{comment}
+\emph{Proof sketch.}
+Differentiate $W_tW_t^\top/n$ to obtain the closed equation.
+The identity $JG_t=-G_tJ$ shows that $J\Sigma_t$ evolves following a Lax equation: $\frac{\dd}{\dd t}(J\Sigma_t)=[G_t,J\Sigma_t] = G_t J \Sigma_t - J \Sigma_t G_t$, whose trace powers
+are constant by cyclicity of the trace. Newton identities give the
+characteristic polynomial; see Appendix~\ref{app:covariance-laws} for a full proof.\qed
+\end{comment}
+
+The covariance equation \eqref{eq:bures-G} is the Bures gradient
+flow~\citep{Takatsu2011,BhatiaJainLim2019} of
+$F(\Sigma):=\ell(\Svu)$, since $\nabla_\Sigma F=G/2$.
+Its fundamental matrix $\Phi_t$, defined by $\dot\Phi_t=-G_t\Phi_t$ and $\Phi_0=\Id$, satisfies
+\begin{equation}\label{eq:orbit}
+ \Phi_t^\top J\Phi_t=  \Phi_tJ\Phi_t^\top=J,\qquad
+ \Sigma_t=\Phi_t\Sigma_0\Phi_t^\top.
+\end{equation}
+The functions $\mathcal H_k$ are conserved at every width $n$, defining mean-field laws.
+Appendix~\ref{app:mean-field} gives their measure formulation, the corresponding Wasserstein PDE, and describes a larger family of laws.
+
+\paragraph{Conserved spectral margins}
+The spectral conservation laws \eqref{eq:bures-G} give uniform lower bounds on the spectrum of the hidden blocks $(\Suu, \Svv)$ through two margins
+of the full covariance.
+\begin{definition}[Covariance support margins and gap]\label{def:support-gap}
+For $\Sigma\succeq0$, the support margins and their sum are
+% Compact spacing local to this definition.
+\setlength{\abovedisplayskip}{2pt}
+\setlength{\belowdisplayskip}{2pt}
+\setlength{\abovedisplayshortskip}{0pt}
+\setlength{\belowdisplayshortskip}{2pt}
+\begin{equation}\label{eq:margins}
+ a_\pm(\Sigma):=\max\{a\ge0:\Sigma\mp aJ\succeq0\},\qquad
+ \gap{\Sigma}:=\aplus{\Sigma}+\aminus{\Sigma}.
+\end{equation}
+\end{definition}
+These maxima are finite and nonnegative. If $\lambda_1\le\cdots\le\lambda_m$
+are the eigenvalues of $\Sigma^{1/2}J\Sigma^{1/2}$, \emph{including zeros}, then
+\begin{equation}\label{eq:gap-spectrum}
+ \aplus{\Sigma}=\lambda_{d_v+1},\qquad
+ \aminus{\Sigma}=-\lambda_{d_v},\qquad
+ \gap{\Sigma}=\lambda_{d_v+1}-\lambda_{d_v}.
+\end{equation}
+Thus $\gap{\Sigma}$ is an indexed spectral gap. Equivalently, it is the
+length of the positive-semidefinite interval
+$[-\aminus{\Sigma},\aplus{\Sigma}]$ of the pencil $\Sigma-tJ$;
+such intervals are standard in matrix-pencil theory
+\citep{NguyenNguyen2023}. Appendix~\ref{app:technical-details} proves
+\eqref{eq:gap-spectrum}, including at singular covariances.
+For $\Sigma\succ0$, $\aplus{\Sigma}$ and $-\aminus{\Sigma}$ are the
+signed eigenvalues of $\Sigma^{1/2} J \Sigma^{1/2}$ nearest zero on their respective sides, and
+$\gap{\Sigma}\ge2\lambda_{\min}(\Sigma)>0$.
+
+\begin{proposition}[Transported lower bounds]\label{lem:margins}
+On its interval of existence, every solution of \eqref{eq:bures-G} from
+$\Sigma_0\succeq0$ preserves $a_\pm(\Sigma_t)=a_\pm(\Sigma_0)$ and satisfies
+\[
+  \Sigma_t \mp a_{\pm}(\Sigma_0) J \succeq 0, \qquad
+  \Suu_t\succeq\aplus{\Sigma_0}\Id_{d_u},\qquad
+  \Svv_t\succeq\aminus{\Sigma_0}\Id_{d_v}.
+\]
+\end{proposition}
+
+\begin{comment}
+\emph{Proof sketch.}
+The key is to track matrix inequalities, rather than eigenvalues.
+The supporting inequalities hold at $t = 0$ by definition. Congruence by
+$\Phi_t$ preserves them because $\Phi_tJ\Phi_t^\top=J$; congruence by
+$\Phi_t^{-1}$ proves that the maximal margins are unchanged.
+Taking principal blocks then gives the hidden bounds. The complete proof is in
+Appendix~\ref{app:technical-details}.\qed
+\end{comment}
+
+The margins $a_\pm(\Sigma)$ need not equal the minimum eigenvalues of the initial hidden blocks: they satisfy
+$\aplus{\Sigma}\le\lambda_{\min}(\Suu)$ and
+$\aminus{\Sigma}\le\lambda_{\min}(\Svv)$, with equality when $\Svu=0$.
+For instance, letting $\Sigma=\left(\begin{smallmatrix}1&r\\r&1\end{smallmatrix}\right)$,
+$|r|\le1$, both margins are $\sqrt{1-r^2}$, whereas both hidden variances are one.
+The support gap $g(\Sigma)$ controls predictor dissipation and can remain positive even when the full covariance is degenerate.
+\begin{wrapfigure}[22]{r}{0.32\textwidth}
+  \centering
+  \resizebox{\linewidth}{!}{\input{figures/gaussian_w2_cone_geometry.pgf}}
+  \captionsetup{font=small}
+  \caption{\textbf{Bures trajectories in the covariance cone.}
+  (a) Equal diagonal blocks: invariant hyperbolas.
+  (b) Unequal blocks: fixed-\(b\) sections of determinant leaves.
+  The displayed trajectories converge to \(r=\beta\).}
+  \label{fig:gaussian-w2-cone-geometry}
+\end{wrapfigure}
+Under special conditions on the conserved spectrum of $J\Sigma$, elimination of hidden blocks becomes possible: Appendix~\ref{app:intrinsic} describes these intrinsic dynamics.
+
+\paragraph{Numerical illustration: the $2\times2$ covariance cone}
+For scalar input and output, every covariance has the form
+$\Sigma=\begin{psmallmatrix}p&r\\r&q\end{psmallmatrix}\succeq0$.
+Take the loss $F(\Sigma):=(r-\beta)^2/2$, with scalar teacher $\beta$.
+Writing $(a,b):=((p+q)/2,(p-q)/2)$ identifies $\Sigma\succeq0$ with
+the Lorentz cone $a^2\ge r^2+b^2$, $a\ge0$. The Bures flow
+\eqref{eq:block-flow-general} becomes
+$(\dot a,\dot b,\dot r)=-(2r(r-\beta),0,2a(r-\beta))$,
+preserving $b=b_0$ and $\alpha^2:=a^2-r^2-b^2=pq-r^2$.
+
+When $p=q$, set $s:=p$. Then $b=0$ and trajectories follow hyperbolas
+$s^2-r^2=\alpha^2$ in $s\ge|r|$ (Figure~\ref{fig:gaussian-w2-cone-geometry}(a)).
+For $\alpha>0$, they converge to $(r,s)=(\beta,\sqrt{\beta^2+\alpha^2})$;
+the spectral-margin bound is exact for the minimum $s$ on the leaf.
+Unequal diagonal blocks give intersections of the planes $b=b_0$ with
+determinant leaves in the three-dimensional cone (panel (b)).
+If $b_0^2+\alpha^2>0$, the endpoint is
+$(r_\infty,a_\infty)=(\beta,\sqrt{\beta^2+b_0^2+\alpha^2})$.
+
+The invariants $2b$ and $-\alpha^2$ are the trace and determinant of
+$J\Sigma$, whose eigenvalues are $b_0\pm\sqrt{b_0^2+\alpha^2}$.
+Thus $\gap{\Sigma_0}=2\sqrt{b_0^2+\alpha^2}$: the convergence bound
+covers both panels, including singular leaves with $b_0\ne0$.
+Remark~\ref{rem:degenerate-boundary-leaves} in Appendix~\ref{app:gf}
+treats the zero-support-gap boundary. Figure~\ref{fig:gaussian-w2-cone-geometry}
+is obtained by integrating $\dot r=-2\sqrt{r^2+b_0^2+\alpha^2}(r-\beta)$.
+
+%%% Local Variables:
+%%% mode: LaTeX
+%%% TeX-master: "../main"
+%%% End:

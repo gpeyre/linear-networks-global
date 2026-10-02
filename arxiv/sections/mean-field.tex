@@ -1,0 +1,153 @@
+% !TEX root = ../main.tex
+
+\section{Measure Formulation and Wasserstein Conservation Laws}
+\label{app:mean-field}
+The covariance equations in the main text have the same meaning at both finite and infinite widths. In this section, we introduce the measure flow that captures training dynamics, define a law shared by all widths, and lifts the spectral invariants to functionals of a neuron distribution.
+
+\subsection{Neuron distributions and Wasserstein flow}
+We describe the configuration of any number of neurons by their law: for $w:=(u,v)\in\R^m$, let
+$\mu\in\cP_2(\R^m)$ and write its uncentered second moment
+\begin{equation}\label{eq:measure-covariance}
+ \Sigma(\mu):=\int ww^\top\,\dd\mu(w).
+\end{equation}
+For $n$ neurons $W:=(w_1,\ldots,w_n)$, the neuron law is an empirical distribution 
+$\widehat\mu_W:=n^{-1}\sum_{i=1}^n\delta_{w_i}$, for which 
+$\Sigma(\widehat\mu_W)=WW^\top/n$. A general covariance
+$\Sigma\succeq0$ is also realized by a centered Gaussian distribution.
+The loss functional is $\cF(\mu):=\ell(\Svu(\mu))$, so
+$\cF(\widehat\mu_W)=\cL(U,V)$.
+
+For a functional with a sufficiently regular first variation, the
+Wasserstein gradient is the spatial gradient
+$\nabla_{W_2}\cF(\mu)(w):=\nabla_w(\delta\cF/\delta\mu)(\mu,w)$ and its negative is the velocity in the continuity equation
+\begin{equation}\label{eq:wasserstein-pde}
+ \partial_t\mu_t+\nabla_w\cdot(\mu_t b_t)=0,\qquad
+ b_t:=-\nabla_{W_2}\cF(\mu_t).
+\end{equation}
+The PDE is understood distributionally, including for empirical
+measures. In the present split model,
+$\delta\cF/\delta\mu=\tfrac12 w^\top G_tw$ up to an additive constant.
+Consequently, 
+\begin{equation}\label{eq:split-wasserstein-pde}
+ \partial_t\mu_t=\nabla_w\cdot(\mu_tG_tw),\qquad
+ \mu_t=(\Phi_t)_\#\mu_0,
+\end{equation}
+where $\Phi_t$ is the fundamental matrix in \eqref{eq:orbit}.
+For the empirical neuron law, the characteristics of \eqref{eq:wasserstein-pde} are exactly
+$\dot u_i=-E_t^\top v_i$, $\dot v_i=-E_tu_i$.
+
+Conversely, given a solution $\Sigma_t$ of \eqref{eq:bures-G}, transporting
+any initial distribution with second moment $\Sigma_0$ by
+$\dot\Phi_t=-G_t\Phi_t$ produces a Wasserstein gradient flow with second
+moment $\Sigma_t$. Indeed, its second moment and $\Sigma_t$ solve the same
+linear equation with the same initial data. Matching covariances alone
+does not ensure that a measure curve follows this gradient flow.
+
+\subsection{Covariance-dependent objectives}
+Moment closure is not specific to the off-diagonal predictor:
+the gradient flow of any sufficiently regular objective depending on second moments closes in terms of a Bures equation.
+\begin{proposition}[Second-moment closure]
+\label{prop:moment-closure}
+Let $F$ be a differentiable scalar function on an open neighborhood of
+$\Sp^m$ in the symmetric matrices, and define $\cF(\mu):=F(\Sigma(\mu))$.
+Let $\mu_t$ be a sufficiently regular Wasserstein gradient flow of $\cF$, and set $\Sigma_t:=\Sigma(\mu_t)$ and $D_t:=\nabla_\Sigma F(\Sigma_t)$.
+Then the characteristics satisfy \(\dot w_t=-2D_tw_t\), and the second moment evolves autonomously as
+\(\dot\Sigma_t=-2(D_t\Sigma_t+\Sigma_tD_t)\).
+Thus the Wasserstein flow of $\cF$ closes exactly on the Bures gradient flow of $F$ on second moments, with the normalization used throughout the paper.
+\end{proposition}
+
+\begin{proof}[Proof of Proposition~\ref{prop:moment-closure}]
+The first variation of $\cF$ at $\mu_t$, up to an additive constant, is
+$\frac{\delta\cF}{\delta\mu}(\mu_t,w)=\ip{D_t}{ww^\top}=w^\top D_tw$.
+Taking its Euclidean gradient in $w$ gives $2D_tw$ and hence the claimed characteristic equation.
+Finally, writing the flow map as $w_0 \mapsto w_t$ and differentiating $\Sigma_t=\int w_tw_t^\top\,\mathrm{d}\mu_0(w_0)$ gives
+\[
+\dot\Sigma_t=\int \left(\dot w_tw_t^\top+w_t\dot w_t^\top\right)\,\mathrm{d}\mu_0(w_0)=-2(D_t\Sigma_t+\Sigma_tD_t).
+\]
+\end{proof}
+
+
+\subsection{Width consistency and covariance-level laws}
+We seek conservation laws defined on neuron distributions that remain
+conserved when evaluated on finite networks of any width.
+
+\begin{definition}[Mean-field conservation law]\label{def:mean-field-law}
+A scalar functional \(\mathcal H(\mu)\) is a mean-field conservation law
+for a family of flows if it is constant along every admissible trajectory
+of every flow in that family, for every admissible initialization.
+It is covariance-level if \(\mathcal H(\mu)=h(\Sigma(\mu))\).
+\end{definition}
+For differentiable functionals, the chain rule expresses conservation as
+orthogonality:
+\[
+ \frac{\dd}{\dd t}\mathcal H(\mu_t)
+ =-\int\nabla_{W_2}\mathcal H(\mu_t)\cdot
+          \nabla_{W_2}\cF(\mu_t)\,\dd\mu_t=0, 
+\]
+whenever taking gradients and the chain rule are well-defined.
+The laws below also have a direct characteristic proof.
+A single mean-field law \( \mathcal H\) induces laws
+\(h_n(W):=\mathcal H(\widehat\mu_W)\) for every width, in the
+finite-dimensional sense of \citet{MarcotteGribonvalPeyre2023}.
+Unrelated laws found separately at each width need not arise this way.
+Conversely, conservation at every finite width passes to the measure flow
+whenever the empirical flows converge in \(W_2\) and \(\mathcal H\) is
+continuous in that metric. For covariance-level laws no limiting argument is needed:
+every positive semidefinite covariance has an empirical realization, and
+the common closed moment equation gives the equivalence with Bures laws.
+
+\subsection{Gram-function laws and their spectral restriction}
+Preservation of pairwise indefinite products yields functionals
+that need not depend only on covariance.
+\begin{proposition}[Fundamental mean-field laws]
+\label{prop:mean-field-conservation-laws}
+Let $\mu_t=(\Phi_t)_\#\mu_0$ be the characteristic flow of
+$\dot w_t=-G_tw_t$, where $G_t^\top=G_t$ and $G_tJ+JG_t=0$.
+For every $r\ge1$ and Borel function $\varphi:\Ssym^r\to\R$,
+the functional
+\begin{equation}\label{eq:gram-mean-field-law}
+ \mathcal H_{\varphi,r}(\mu)
+ :=\int\varphi\!\left((w_a^\top Jw_b)_{1\le a,b\le r}\right)
+       \prod_{a=1}^r\dd\mu(w_a)
+\end{equation}
+is conserved whenever this integral is absolutely integrable at
+initialization. In particular, the spectral laws
+$\mathcal H_k(\Sigma(\mu))$ of \eqref{eq:bures-G}
+are conserved for every $\mu_0\in\cP_2(\R^m)$.
+For particles, the Gram imbalance
+$\Gamma_t:=V_t^\top V_t-U_t^\top U_t=-W_t^\top JW_t$ is constant and
+\begin{equation}\label{eq:finite-spectrum-gamma}
+ \mathcal H_k(\Sigma_t)=\tr\!\left((-\Gamma_t/n)^k\right),
+ \qquad k\ge1.
+\end{equation}
+The nonzero spectra of $J\Sigma_t$ and $-\Gamma_t/n$ coincide.
+\end{proposition}
+
+\begin{proof}[Proof of Proposition~\ref{prop:mean-field-conservation-laws}]
+Along characteristics,
+\(
+\frac{\mathrm{d}}{\mathrm{d}t}(w_a^\top Jw_b)
+=-w_a^\top(G_tJ+JG_t)w_b=0,
+\)
+so \eqref{eq:gram-mean-field-law} is conserved.
+Bounded Borel tests are integrable, and cyclic polynomial tests need
+only second moments because each sampled variable appears quadratically.
+For the cyclic polynomial test function, with \(w_{k+1}:=w_1\), repeated
+integration gives
+\[
+\int\prod_{\ell=1}^k
+\left(w_\ell^\top Jw_{\ell+1}\right)
+\prod_{\ell=1}^k\mathrm{d}\mu(w_\ell)
+=\tr\!\left((J\Sigma)^k\right).
+\]
+Thus \eqref{eq:bures-G} is a special case of
+\eqref{eq:gram-mean-field-law}.
+The first \(m\) trace powers determine the characteristic polynomial by Newton identities.
+For empirical measures, $J\Sigma=(JW)(W^\top/n)$ while $(W^\top/n)(JW)=-\Gamma/n$.
+The nonzero eigenvalues of $AB$ and $BA$ coincide, which gives the spectral statement and \eqref{eq:finite-spectrum-gamma}.
+\end{proof}
+
+%%% Local Variables:
+%%% mode: LaTeX
+%%% TeX-master: "../main"
+%%% End:

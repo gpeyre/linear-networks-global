@@ -1,0 +1,75 @@
+{
+  "seed": 20260910,
+  "checks": {
+    "structure": {
+      "labels": 196,
+      "references": 320,
+      "citations": 26,
+      "intrinsic_terms_isolated": true
+    },
+    "presentation_alignment": {
+      "main_sections": 6,
+      "appendix_sources": 7
+    },
+    "factor_covariance_closure": {
+      "factor_loss_normalization_and_covariance_closure_cases": 80,
+      "gram_and_covariance_spectral_laws": true,
+      "exact_factor_GD_quadratic_covariance_increment": true,
+      "finite_factor_phase_closure_and_mechanical_energy_cases": 80
+    },
+    "phase_laws": {
+      "noncommuting_phase_paths": 100,
+      "steps_per_path": 5
+    },
+    "intrinsic_identities": {
+      "rectangular_position_cases": 150,
+      "phase_cases": 150,
+      "zero_scale_phase_cases": 50
+    },
+    "general_regression": {
+      "nonsymmetric_regression_cases": 200
+    },
+    "spectral_support_and_lie_algebra": {
+      "optimal_support_cases": 200,
+      "lie_dimension_and_law_rank_cases": 9
+    },
+    "semidefinite_support_gap": {
+      "semidefinite_support_and_transport_cases": 180,
+      "fixed_hidden_block_examples": 4,
+      "one_sided_block_examples": 6,
+      "zero_gap_stationary_counterexample": true
+    },
+    "rank_adaptive_sampling": {
+      "projected_gaussian_and_bernoulli_sampling_cases": 80,
+      "one_sided_width_and_zero_predictor_cases": 6,
+      "full_white_zero_gap_obstruction_cases": 8
+    },
+    "rank_deficient_training": {
+      "one_sided_singular_gradient_flows": 8,
+      "one_sided_singular_factor_GD_paths": 8,
+      "full_rank_targets_and_unchanged_rate_certificates": true
+    },
+    "phase_energy_estimates": {
+      "energy_identity_and_conditional_Lyapunov_cases": 200
+    },
+    "local_gd_and_force_tails": {
+      "equivalent_explicit_GD_stepsizes_and_rates": 200,
+      "local_GD_linearizations_and_dimension_free_force_bounds": 100
+    },
+    "first_order_length_and_predictor_tails": {
+      "rectangular_quadratic_kernel_trajectories": 12,
+      "sharper_length_and_selected_predictor_bounds": true
+    },
+    "resnet_residual_path_escape": {
+      "full_factor_vs_scalar_trajectories": 7,
+      "positive_covariances_and_constant_support_gap": true,
+      "negative_target_orientation_and_speed_bounds": true,
+      "compact_time_depth_limit_checks": 10
+    },
+    "tightened_closed_form_optimizer": {
+      "closed_form_vs_scalar_optimization_cases": 400,
+      "compact_fixed_eta_formula_verified": true,
+      "original_explicit_and_basic_rates_recovered": true
+    }
+  }
+}

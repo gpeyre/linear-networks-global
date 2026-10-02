@@ -1,0 +1,1256 @@
+\section{Technical details and proofs}\label{app:technical-details}\label{app:convergence-proofs}
+\subsection{Loss estimates}\label{app:proofs}
+\begin{lemma}[Smooth PL consequences]\label{lem:pl}
+Under Assumption~\ref{ass:loss}, the minimizer set
+$\cS_\star:=\{S:\ell(S)=\ell_\star\}$ is nonempty, and
+\begin{equation}\label{eq:pl-consequences}
+\norm{\nabla\ell(S)}_{\F}^2\le2L(\ell(S)-\ell_\star),\qquad
+\dist(S,\cS_\star)^2\le2(\ell(S)-\ell_\star)/\kappa.
+\end{equation}
+For every perturbation $H$,
+\begin{equation}\label{eq:perturb}
+\sqrt{\ell(S+H)-\ell_\star}
+\le\sqrt{\ell(S)-\ell_\star}+\sqrt{L/2}\norm H_{\F}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}[Proof of Lemma~\ref{lem:pl}]
+
+Apply the descent lemma at $S-\nabla\ell(S)/L$ for the first inequality.
+Since $\nabla\ell$ is globally Lipschitz, the Euclidean gradient flow
+$\dot S=-\nabla\ell(S)$ exists for all $t\ge0$.
+Writing $h:=\ell(S)-\ell_\star$ gives $\dot h=-\norm{\nabla\ell}^2$ and,
+where $h>0$, $-\frac{\dd}{\dd t}\sqrt h\ge\sqrt{\kappa/2}\norm{\dot S}$.
+Thus its total remaining length is at most $\sqrt{2h/\kappa}$.
+The flow has a limit, with loss gap zero by PL, proving attainment and the distance
+bound. Finally, the descent lemma and the first inequality bound the
+perturbed loss gap by $(\sqrt h+\sqrt{L/2}\norm H_{\F})^2$.
+\end{proof}
+\begin{remark}[Quadratic growth and convexity]
+Lemma~\ref{lem:pl} proves the quadratic-growth bound
+\begin{equation}\label{eq:quadratic-growth}
+ \ell(S)-\ell_\star\ge\frac\lambda2\dist(S,\cS_\star)^2
+ \qquad\text{with }\lambda=\kappa.
+\end{equation}
+If a larger quadratic-growth constant $\lambda$ is known, it improves
+the distance bounds while leaving the loss rates, which use $\kappa$, unchanged.
+The PL-to-quadratic-growth implication does not need convexity
+\citep{KarimiNutiniSchmidt2016}. Conversely, convex quadratic growth
+with constant \(\lambda\) implies PL with constant \(\lambda/4\):
+for a nearest minimizer \(S_\star\),
+\(\Delta\le\ip{\nabla\ell(S)}{S-S_\star}
+\le\norm{\nabla\ell(S)}_{\F}\sqrt{2\Delta/\lambda}\).
+The best PL and quadratic-growth constants need not coincide.
+For a nonzero quadratic Hessian $\quadH\succeq0$,
+$\lambda=\kappa=\lambda_{\min}^{+}(\quadH)$ is valid and
+$\cS_\star=\Svu_\star+\kerop\quadH$.
+\end{remark}
+
+\subsection{Covariance closure and conservation laws}
+\label{app:covariance-laws}
+Direct matrix differentiation proves closure and conservation at
+every width. The measure interpretation is given separately in
+Appendix~\ref{app:mean-field}.
+
+\begin{proof}[Proof of Proposition~\ref{prop:covariance-closure-laws}]
+Since $\dot W_t=-G_tW_t$ and $G_t^\top=G_t$,
+differentiating $W_tW_t^\top/n$ gives \eqref{eq:bures-G}.
+For any covariance solution, define
+$\dot\Phi_t=-G_t\Phi_t$, $\Phi_0=\Id$. Uniqueness for the resulting
+linear covariance equation yields
+$\Sigma_t=\Phi_t\Sigma_0\Phi_t^\top$, so positive semidefiniteness
+is preserved. The identity $G_tJ+JG_t=0$ gives
+$\frac{\dd}{\dd t}(\Phi_t^\top J\Phi_t)=0$.
+Invertibility of $\Phi_t$ then gives both identities in
+\eqref{eq:orbit}. Equivalently,
+$\frac{\dd}{\dd t}(J\Sigma_t)=[G_t,J\Sigma_t]$, so
+$\frac{\dd}{\dd t}\tr((J\Sigma_t)^k)=0$ for every $k\ge1$.
+The first $m$ trace powers determine the characteristic polynomial.
+For later use, the block equations are
+\begin{equation}\label{eq:block-flow-general}
+ \begin{aligned}
+ \dot\Suu_t&=-\Suv_tE_t-E_t^\top\Svu_t,\qquad
+ \dot\Svv_t=-\Svu_tE_t^\top-E_t\Suv_t,\\
+ \dot\Svu_t&=-E_t\Suu_t-\Svv_tE_t.
+ \end{aligned}
+\end{equation}
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{lem:margins}]
+For any $c\in\R$, the characteristic congruence gives
+\[
+ \Sigma_t-cJ=\Phi_t(\Sigma_0-cJ)\Phi_t^\top.
+\]
+Invertibility of $\Phi_t$ preserves the entire feasible interval of $c$,
+so both endpoints are conserved even when $\Sigma_0$ is singular.
+Taking principal blocks proves the hidden bounds.
+\end{proof}
+
+\begin{proof}[Spectral formula \eqref{eq:gap-spectrum}]
+The feasible sets in Definition~\ref{def:support-gap} contain zero, are
+closed intervals, and are bounded above by the corresponding hidden-block
+minimum eigenvalues. Thus the maxima exist.
+For $\Sigma\succ0$, put $H:=\Sigma^{1/2}J\Sigma^{1/2}$.
+Sylvester's inertia theorem gives $d_v$ negative and $d_u$ positive
+eigenvalues. Since $H^{-1}=\Sigma^{-1/2}J\Sigma^{-1/2}$,
+$\Sigma-cJ=\Sigma^{1/2}(\Id-cH^{-1})\Sigma^{1/2}$ gives
+$\aplus{\Sigma}=\lambda_{d_v+1}(H)$ and
+$\aminus{\Sigma}=-\lambda_{d_v}(H)$.
+For singular $\Sigma$, apply this to $\Sigma+\epsilon\Id$.
+As $\epsilon\downarrow0$, each margin decreases to a finite limit that
+is feasible for $\Sigma$ by closedness, and hence equals its margin.
+Continuity of the square root and of ordered symmetric eigenvalues
+proves \eqref{eq:gap-spectrum} without deleting any zero eigenvalues.
+Finally $H$ and $J\Sigma$ have the same characteristic polynomial by
+the $AB,BA$ identity, even when they are not similar.
+\end{proof}
+
+\begin{remark}[Sharpness of the supporting constants]
+For every $\Sigma\succeq0$, testing the supporting inequalities on the two
+coordinate subspaces gives the upper bounds in
+\[
+ \lambda_{\min}(\Sigma)\le\aplus{\Sigma}\le\lambda_{\min}(\Suu),\qquad
+ \lambda_{\min}(\Sigma)\le\aminus{\Sigma}\le\lambda_{\min}(\Svv).
+\]
+The lower bounds follow from $\Id\mp J\succeq0$.
+When $\Svu=0$, the two upper bounds are attained.
+Consequently $2\lambda_{\min}(\Sigma)\le\gap{\Sigma}\le2\norm{\Sigma}_{\op}$.
+Both margins are positive exactly when $\Sigma\succ0$: if both are
+positive and $x\in\kerop\Sigma$, the supporting inequalities force
+$x^\top Jx=0$ and then $(\Sigma-\aplus{\Sigma}J)x=0$, so $x=0$.
+The convergence theorem requires only their sum to be positive, so it
+also covers some singular covariances. Each positive margin makes the
+corresponding principal block positive definite, giving the rank bounds
+in Remark~\ref{rem:singular-support}.
+\end{remark}
+
+\subsection{Linear Convergence}\label{app:gf}
+We prove the spectral-margin theorem and its quantitative trajectory
+bounds first. Conditional and determinant-based criteria follow as
+supplementary comparisons.
+
+\begin{proposition}[Quantitative trajectory bounds]\label{prop:gf-lift-tail}
+Under Theorem~\ref{thm:gf}, set
+$a_0:=\lambda_{\min}(\Sigma_0)$, $B_0:=\norm{\Sigma_0}_{\op}$,
+$I_0:=\gap{\Sigma_0}^{-1}\sqrt{2\Delta_0/\kappa}$, and $B_\infty:=B_0e^{2I_0}$.
+Then
+\begin{align}
+ a_0e^{-2I_0}\Id_m&\preceq\Sigma_t\preceq B_\infty\Id_m,\label{eq:gf-tube}\\
+ \norm{\Sigma_t-\Sigma_\infty}_{\op}
+ &\le2B_\infty I_0e^{-\kappa \gap{\Sigma_0}t},\label{eq:gf-tail}\\
+ \norm{\Svu_t-\Svu_\infty}_{\F}
+ &\le2B_\infty I_0e^{-\kappa \gap{\Sigma_0}t}.\label{eq:gf-predictor-tail}
+\end{align}
+For the characteristic lift of any initial law in $\cP_2$ with this
+second moment, there is a limit $\mu_\infty$ and
+\begin{equation}\label{eq:gf-w2}
+ W_2(\mu_t,\mu_\infty)
+ \le\min\!\left\{\sqrt{\tr\Sigma_0}\,e^{I_0},\sqrt{2B_\infty}\right\}
+       I_0e^{-\kappa \gap{\Sigma_0} t}.
+\end{equation}
+The same bound applies to $\norm{W_t-W_\infty}_{\F}/\sqrt n$ for particles.
+The smallest positive covariance eigenvalue also satisfies
+$\lambda_{\min}^{+}(\Sigma_t)\ge
+e^{-2I_0}\lambda_{\min}^{+}(\Sigma_0)$, including at $t=\infty$.
+\end{proposition}
+
+\begin{proof}[Proof of Theorem~\ref{thm:gf} and Proposition~\ref{prop:gf-lift-tail}]
+The predictor equation \eqref{eq:block-flow-general} gives the exact
+dissipation identity on every positive semidefinite trajectory:
+\begin{equation}\label{eq:flow-dissipation}
+\frac{\mathrm{d}}{\mathrm{d}t}\ell(\Svu_t)
+=-\tr(E_t^\top E_t\Suu_t)-\tr(E_t^\top\Svv_tE_t)\le0.
+\end{equation}
+The transported hidden-block bounds from Proposition~\ref{lem:margins}
+therefore give $-\dot\Delta\ge \gap{\Sigma_0}\norm E_{\F}^2\ge2\kappa \gap{\Sigma_0}\Delta$.
+On any finite existence interval, the preceding dissipation and PL give,
+where the loss gap is positive,
+\[
+ -\frac{\dd}{\dd t}\sqrt{\Delta_t}
+ \ge\frac{\gap{\Sigma_0}\norm{E_t}_{\F}^2}{2\sqrt{\Delta_t}}
+ \ge \gap{\Sigma_0}\sqrt{\kappa/2}\norm{E_t}_{\F}.
+\]
+At zero loss gap the flow is stationary. Hence, for every finite $T>t$,
+\[
+ \int_t^T\norm{E_r}_{\F}\,\dd r
+ \le\frac1{\gap{\Sigma_0}}\sqrt{\frac2\kappa}
+       (\sqrt{\Delta_t}-\sqrt{\Delta_T})
+ \le I_0e^{-\kappa \gap{\Sigma_0}t}.
+\]
+Together with smoothness, this gives
+\begin{equation}\label{eq:force-tail}
+ \norm{G_t}_{\op}=\norm{E_t}_{\op}
+ \le\sqrt{2L\Delta_0}e^{-\kappa \gap{\Sigma_0}t},\qquad
+ \int_t^T\norm{G_r}_{\op}\,\dd r\le I_0e^{-\kappa \gap{\Sigma_0}t}.
+\end{equation}
+Both $\Phi_t$ and $\Phi_t^{-1}$ have norm at most $e^{I_0}$, even when
+$\Sigma_0$ is singular. Their congruence representation proves
+\eqref{eq:gf-tube} before the maximal existence time. The covariance vector
+field is locally Lipschitz on all symmetric matrices, and the upper bound
+prevents finite-time blow-up; hence the solution is global.
+Integrating $\norm{\dot\Sigma_t}_{\op}\le2B_\infty\norm{G_t}_{\op}$
+proves the Cauchy property and \eqref{eq:gf-tail}. Integrability of the
+force also makes $\Phi_t$ Cauchy; its limit is invertible since
+$\sigma_{\min}(\Phi_t)\ge e^{-I_0}$.
+Thus $\Sigma_\infty=\Phi_\infty\Sigma_0\Phi_\infty^\top$ has the same
+rank as $\Sigma_0$ and is optimal by \eqref{eq:gf-rate}.
+The singular-value bound for congruence gives the claimed positive
+eigenvalue floor, without requiring full rank.
+Directly in predictor Frobenius norm,
+$\norm{\dot\Svu_t}_{\F}\le2B_\infty\norm{E_t}_{\F}$;
+its integral proves \eqref{eq:gf-predictor-tail} without a dimension factor.
+Finally $\norm{\Phi_t-\Phi_\infty}_{\op}\le e^{I_0}I_0e^{-\kappa \gap{\Sigma_0}t}$.
+Coupling the two characteristic images of the same initial particle gives
+the first bound in \eqref{eq:gf-w2}. For the second, use
+\[
+ \left(\int\norm{G_t w}^2\,\dd\mu_t(w)\right)^{1/2}
+ =\sqrt{\tr(G_t\Sigma_tG_t)}
+ \le\sqrt{2B_\infty}\,\norm{E_t}_{\F},
+\]
+and integrate along the same characteristics. The identical estimate
+holds for empirical factors after division by $\sqrt n$.
+If $\Delta_0=0$, the first-order flow is stationary and
+the same formulas hold with $I_0=0$.
+\end{proof}
+\paragraph{Alternative nondegeneracy criteria}
+The same argument can use any independently established hidden-block
+lower bounds. The common-bound formulation below uses $2c$ in place of
+$\gap{\Sigma_0}$. For $\Sigma_0\succ0$, taking
+$c:=\min(\aplus{\Sigma_0},\aminus{\Sigma_0})$ recovers a possibly weaker
+rate than Theorem~\ref{thm:gf}.
+
+\begin{lemma}[Conditional hidden-block criterion]
+\label{thm:uniform-nondegeneracy-convergence}
+Under Assumption~\ref{ass:loss}, start \eqref{eq:bures-G} from
+$\Sigma_0\succ0$. If $\Suu_t\succeq c\Id$ and $\Svv_t\succeq c\Id$
+for some $c>0$ throughout its maximal existence interval, the flow is
+global and
+\begin{equation}
+\label{eq:uniform-nondegeneracy-energy-rate}
+\Delta_t\le\Delta_0e^{-4\kappa ct}.
+\end{equation}
+Moreover $\Sigma_t$ converges to $\Sigma_\infty\succ0$ with
+$\Svu_\infty\in\cS_\star$.
+\end{lemma}
+
+Quadratic growth further gives
+$\dist(\Svu_t,\cS_\star)^2\le2\Delta_0e^{-4\kappa ct}/\lambda$,
+where $\lambda=\kappa$ is always available.
+
+\begin{proof}[Proof of Lemma~\ref{thm:uniform-nondegeneracy-convergence}]
+The assumed hidden bounds give
+$-\dot\Delta\ge2c\norm E_{\F}^2\ge4c\kappa\Delta$.
+On every positive loss gap interval, differentiating $\sqrt{\Delta_t}$ gives
+\[
+ -\frac{\mathrm{d}}{\mathrm{d}t}\sqrt{\Delta_t}
+ \ge c\sqrt{2\kappa}\,\norm{E_t}_{\F},\qquad
+ \int_t^T\norm{G_r}_{\op}\,\mathrm{d}r
+ \le\frac{\sqrt{\Delta_t}-\sqrt{\Delta_T}}{c\sqrt{2\kappa}}.
+\]
+The same bound holds through zero loss gap by stationarity and is valid
+before the maximal existence time.
+Both characteristic matrices $\Phi_t$ and $\Phi_t^{-1}$ are bounded by
+the exponential of this integral. Their covariance congruence gives
+\begin{equation}\label{eq:uniform-nondegeneracy-covariance-bounds}
+ \norm{\Sigma_t}_{\op}\le\norm{\Sigma_0}_{\op}
+  \exp\!\left(\frac1c\sqrt{\frac{2\Delta_0}{\kappa}}\right),\qquad
+ \lambda_{\min}(\Sigma_t)\ge\lambda_{\min}(\Sigma_0)
+  \exp\!\left(-\frac1c\sqrt{\frac{2\Delta_0}{\kappa}}\right).
+\end{equation}
+These bounds rule out finite-time blow-up. The tail of the integral proves convergence to a
+positive-definite covariance with optimal predictor.
+Quadratic growth gives the distance bound.
+\end{proof}
+
+For coercive losses, determinant conservation and the second spectral
+law yield an alternative, generally much coarser, source of such bounds.
+\begin{proposition}[Coercivity prevents covariance collapse]
+\label{prop:coercive-nondegeneracy}
+Under Assumption~\ref{ass:loss}, suppose $\ell$ is coercive and
+$\Sigma_0\succ0$. Let $M:=\sup\{\norm S_{\F}:\ell(S)\le\ell(\Svu_0)\}$.
+On its maximal existence interval the Bures flow satisfies
+$c\Id_m\preceq\Sigma_t\preceq B\Id_m$, where
+$B:=\sqrt{\tr((J\Sigma_0)^2)+2M^2}+M$ and
+$c:=\det\Sigma_0/B^{m-1}>0$.
+In particular both hidden blocks are bounded below by $c\Id$.
+\end{proposition}
+
+\begin{proof}[Proof of Proposition~\ref{prop:coercive-nondegeneracy}]
+The characteristic congruence \eqref{eq:orbit} preserves positive
+definiteness on the maximal existence interval. Loss dissipation gives
+$\norm{\Svu_t}_{\F}\le M$. Since $\tr G_t=0$, Jacobi's formula yields
+$\det\Sigma_t=\det\Sigma_0>0$. The second spectral law gives
+\[
+ \norm{\Suu_t}_{\F}^2+\norm{\Svv_t}_{\F}^2
+ =\tr((J\Sigma_0)^2)+2\norm{\Svu_t}_{\F}^2
+ \le\tr((J\Sigma_0)^2)+2M^2.
+\]
+Split $\Sigma_t$ into its block-diagonal and off-diagonal parts. Their
+operator norms are bounded by the square root of the last expression
+and by $\norm{\Svu_t}_{\op}\le M$, respectively. Thus
+$\norm{\Sigma_t}_{\op}\le B$. Finally,
+$\det\Sigma_0\le\lambda_{\min}(\Sigma_t)B^{m-1}$ gives
+$\Sigma_t\succeq c\Id_m$, and the same lower bound holds on both
+principal blocks.
+\end{proof}
+
+\begin{remark}[Coarse ellipticity versus the spectral-margin rate]
+\label{rem:coarse-rate}
+At $\Sigma_0=\alpha\Id_m$, the determinant argument gives
+\[
+c_{\rm coarse}
+:=\alpha\left(\frac{\alpha}
+{\sqrt{m\alpha^2+2M^2}+M}\right)^{m-1}.
+\]
+Its rate $4\kappa c_{\rm coarse}$ can be extremely small in dimension,
+whereas the support gap $\gap{\Sigma_0}=2\alpha$ gives $4\alpha\kappa$ directly.
+For general initial covariances, the margin argument likewise gives a
+rate determined by the signed spectrum, with no additional dimension factor.
+Trace and initial loss alone cannot provide a uniform positive rate as
+the support gap tends to zero
+(Example~\ref{ex:slow}).
+\end{remark}
+
+\begin{remark}[Degenerate boundary leaves]\label{rem:degenerate-boundary-leaves}
+In the $2\times2$ covariance setting of Section~\ref{sec:laws}, write
+$\Sigma=\begin{psmallmatrix}p&r\\r&q\end{psmallmatrix}$,
+$b_0:=(p_0-q_0)/2$, and $\alpha^2:=p_0q_0-r_0^2$,
+with predictor loss $\ell(r):=(r-\beta)^2/2$.
+On the boundary \(b_0=\alpha=0\), the scalar equation is
+\(\dot r=-2|r|(r-\beta)\).
+If \(\beta\ne0\), the ray with \(r_0\beta>0\) converges to \(\beta\),
+whereas \(r_0\beta<0\) converges to the nonoptimal apex \(r=0\);
+the apex itself is stationary. For example, when \(\beta=1\) and
+\(p_0=q_0=1\), \(r_0=-1\), one has
+\(p_t=q_t=-r_t=(2e^{2t}-1)^{-1}\).
+When \(\beta=0\), one has \(r_t=r_0/(1+2|r_0|t)\): convergence to the
+optimal apex is algebraic for \(r_0\ne0\).
+These boundary cases have $\gap{\Sigma_0}=0$ and are not covered by the
+positive-support-gap convergence theorem.
+\end{remark}
+
+\begin{example}[Fixed trace and predictor, arbitrarily slow escape]\label{ex:slow}
+Let $d_u=d_v=2$, $0<\delta<1$, and
+\[
+ \Sigma_0=\diag(\delta,2-\delta,\delta,2-\delta),\qquad
+ \ell(S):=\tfrac12\norm{S-e_1e_1^\top}_{\F}^2.
+\]
+Here $L=\kappa=1$, $\tr\Sigma_0=4$, $\Svu_0=0$, and $\Delta_0=1/2$,
+independently of $\delta$. The active scalar block evolves by
+\[
+ r'=2\sqrt{r^2+\delta^2}(1-r),\qquad r(0)=0.
+\]
+The instantaneous relative decay of the loss at zero is $4\delta$.
+Until $r=1/2$, $r'\le2(r+\delta)$, so
+$r(t)\le\delta(e^{2t}-1)$. The time to reach $1/2$ is at least
+$\tfrac12\log(1+1/(2\delta))$, which diverges as $\delta\downarrow0$.
+There can therefore be no uniform positive exponential rate with a fixed
+finite prefactor determined only by the displayed trace, initial loss gap, $L$, and
+$\kappa$. At $\delta=0$ the active block is stationary and nonoptimal.
+Theorem~\ref{thm:gf} records exactly the missing scale: $\gap{\Sigma_0}=2\delta$.
+The slow escape occurs even for a strongly convex loss with a unique
+predictor minimizer.
+\end{example}
+
+
+\subsection{Finite Width Convergence}\label{app:sampling}
+Write $r_0:=\rankop\tSigma_0$ for the population covariance rank.
+\begin{theorem}[Relative initialization stability]\label{thm:relative}
+Under Assumption~\ref{ass:loss}, let $\tSigma_0\succeq0$ with
+$\gap{\tSigma_0}>0$, and put $\widetilde B_0:=\norm{\tSigma_0}_{\op}$ and
+$\widetilde\Delta_0:=\ell(\tSvu_0)-\ell_\star$.
+If an empirical covariance satisfies
+\begin{equation}\label{eq:relative}
+ (1-\varepsilon)\tSigma_0\preceq\Sigma_0
+ \preceq(1+\varepsilon)\tSigma_0,\qquad 0<\varepsilon<1,
+\end{equation}
+then its first-order factor flow is global, converges to an optimal
+predictor, and its loss gap $\Delta_t=\ell(\Svu_t)-\ell_\star$ satisfies
+\begin{equation}\label{eq:sample-rate}
+ \Delta_t\le\Delta_0
+ e^{-2(1-\varepsilon)\kappa \gap{\tSigma_0}t}.
+\end{equation}
+Only the lower inequality in \eqref{eq:relative} is needed for this claim.
+With both inequalities, $d_\wedge:=\min(d_u,d_v)$ gives the deterministic
+prefactor bound
+\begin{equation}\label{eq:sample-prefactor}
+ \Delta_0\le
+ \left(\sqrt{\widetilde\Delta_0}+\varepsilon \widetilde B_0\sqrt{Ld_\wedge/2}\right)^2.
+\end{equation}
+For the sampling law in Corollary~\ref{cor:finite-width}, the width
+condition \eqref{eq:width} guarantees \eqref{eq:relative} with probability
+at least $1-\delta$.
+\end{theorem}
+
+
+\begin{proof}[Proof of Theorem~\ref{thm:relative}]
+From $\tSigma_0-\aplus{\tSigma_0}J\succeq0$ and the lower relative inequality,
+$\Sigma_0-(1-\varepsilon)\aplus{\tSigma_0}J\succeq0$, and similarly for
+$\aminus{\tSigma_0}$. Transporting these inequalities along the empirical
+fundamental matrix allows us to apply the proof of Theorem~\ref{thm:gf} with margin
+sum $(1-\varepsilon)\gap{\tSigma_0}$ and initial empirical loss gap. The two-sided relative
+comparison gives
+$\norm{\Sigma_0-\tSigma_0}_{\op}\le\varepsilon \widetilde B_0$ and hence
+$\norm{\Svu_0-\tSvu_0}_{\F}\le\sqrt{d_\wedge}\varepsilon \widetilde B_0$.
+Equation~\eqref{eq:sample-prefactor} follows from \eqref{eq:perturb}.
+For the probability bound, choose an orthonormal basis
+$T\in\R^{m\times r_0}$ of the range of $\tSigma_0$ and write
+$\tSigma_0=T\Lambda T^\top$, where $\Lambda\succ0$.
+The vectors $\eta_i:=T^\top\xi_i\in\R^{r_0}$ have identity second
+moment and subgaussian norm at most $K$, and
+$w_i=T\Lambda^{1/2}\eta_i$.
+The covariance tail bound~\citep[Exercise 4.7.3]{Vershynin2018}
+applied in this range gives
+\[
+ \norm{n^{-1}\textstyle\sum_i\eta_i\eta_i^\top-\Id_{r_0}}_{\op}
+ \le CK^2\left(\sqrt{\frac{r_0+u}{n}}+\frac{r_0+u}{n}\right)
+\]
+with failure probability at most $2e^{-u}$. Set $u:=\log(2/\delta)$ and
+adjust $C$ in \eqref{eq:width}. Multiplication on the left by
+$T\Lambda^{1/2}$ and on the right by its transpose gives
+\eqref{eq:relative}.
+\end{proof}
+\begin{proof}[Proof of Corollary~\ref{cor:finite-width}]
+Theorem~\ref{thm:relative} gives the relative covariance event and the
+loss rate. Its lower bound gives
+$\gap{\Sigma_0}\ge(1-\varepsilon)\gap{\tSigma_0}>0$,
+so Theorem~\ref{thm:gf} gives global existence and factor convergence.
+The two-sided event preserves the kernel of $\tSigma_0$, so the empirical
+initial covariance is positive definite exactly when $\tSigma_0$ is.
+\end{proof}
+
+\paragraph{Small width for full-white sampling}
+The rank improvement in Remark~\ref{rem:rank-adaptive-width} concerns
+the chosen population law. A positive population support gap alone does not
+give a small-width support gap guarantee for full-white samples.
+\begin{example}[Full-white sampling can lose the support gap]
+\label{ex:white-small-width}
+Let $d_u=D$, $d_v=1$, and sample from $N(0,\tSigma_0)$ with
+$\tSigma_0=\sigma^2\Id_{D+1}$, $\sigma>0$.
+There is a universal $c>0$ such that, if
+$1\le n\le D/16$, then
+$\mathbb P\{\gap{\Sigma_0}=0\}\ge1-4e^{-cD}$,
+although $\gap{\tSigma_0}=2\sigma^2$.
+Thus a width bound depending only on $\min(d_u,d_v)$ cannot uniformly
+preserve a positive support gap for full-white sampling. Convergence of
+these trajectories is not decided by this example.
+\end{example}
+\begin{proof}
+Write $U_0=\sigma X$ and $V_0=\sigma y^\top$, where
+$X\in\R^{D\times n}$ and $y\in\R^n$ have independent standard
+Gaussian entries. Gaussian singular-value and norm concentration
+\citep[Section~7.3]{Vershynin2018}, with deviation $\sqrt D/8$, gives
+\[
+ \sigma_{\min}(X)\ge\sqrt D-\sqrt n-\sqrt D/8\ge5\sqrt D/8,
+ \qquad \norm y\le\sqrt n+\sqrt D/8\le3\sqrt D/8
+\]
+with probability at least $1-4e^{-cD}$, for a universal $c>0$.
+Hence $X^\top X-yy^\top\succeq(D/4)\Id_n$.
+The nonzero spectrum of $J\Sigma_0$ is the spectrum of
+$\sigma^2(X^\top X-yy^\top)/n$, so it has $n$ positive eigenvalues
+and $D+1-n\ge2$ zero eigenvalues. In \eqref{eq:gap-spectrum},
+$d_v=1$ therefore gives $\gap{\Sigma_0}=\lambda_2-\lambda_1=0$.
+\end{proof}
+
+\paragraph{A separate initial-accuracy budget}
+A relative covariance bound preserves the rate; an absolute bound also
+controls the initial loss. In the sampling setting of
+Corollary~\ref{cor:finite-width}, write
+$\widetilde B_0:=\norm{\tSigma_0}_{\op}$, $\widetilde\Delta_0:=\ell(\tSvu_0)-\ell_\star$, and
+$d_\wedge:=\min(d_u,d_v)$.
+Besides $\varepsilon,\delta\in(0,1)$, choose an absolute tolerance
+$\zeta>0$ and set
+\begin{equation}\label{eq:sampling-budgets}
+ \beta:=\min\{\varepsilon,\zeta/\widetilde B_0\},\qquad
+ \overline\Delta:=
+ \left(\sqrt{\widetilde\Delta_0}+\zeta\sqrt{Ld_\wedge/2}\right)^2.
+\end{equation}
+
+\begin{theorem}[High-probability finite-width convergence]
+\label{thm:sampling-budgets}
+Under Assumption~\ref{ass:loss}, let $\tSigma_0\succeq0$ with
+$\gap{\tSigma_0}>0$ and use the sampling law and tolerances above.
+There is a universal $C>0$ such that, if
+\begin{equation}\label{eq:budget-width}
+ n\ge CK^4\beta^{-2}\bigl(r_0+\log(2/\delta)\bigr),
+\end{equation}
+then with probability at least $1-\delta$ the empirical covariance has
+positive support gap, the factor flow is global, and
+\[
+ \Delta_t\le\Delta_0e^{-2\kappa(1-\varepsilon)\gap{\tSigma_0}t}
+ \le\overline\Delta e^{-2\kappa(1-\varepsilon)\gap{\tSigma_0}t}.
+\]
+The factors converge, their limiting predictor belongs to $\cS_\star$, and
+$\dist(\Svu_t,\cS_\star)^2\le2\Delta_t/\kappa$.
+\end{theorem}
+
+\begin{proof}[Proof of Theorem~\ref{thm:sampling-budgets}]
+Apply the relative concentration event with tolerance $\beta$.
+It implies the relative bounds with tolerance $\varepsilon$ and
+$\norm{\Sigma_0-\tSigma_0}_{\op}\le\beta \widetilde B_0\le\zeta$.
+The two initial supporting inequalities give the margin bounds, and
+Lemma~\ref{lem:pl} gives the loss gap bound. More precisely, putting
+$\underline g:=(1-\varepsilon)\gap{\tSigma_0}$ and $\overline B_0:=(1+\varepsilon)\widetilde B_0$,
+the same event gives
+\begin{equation}\label{eq:sampling-event}
+ a_\pm(\Sigma_0)\ge(1-\varepsilon)a_\pm(\tSigma_0),\quad
+ \norm{\Sigma_0}_{\op}\le\overline B_0,\quad
+ \Delta_0\le\overline\Delta.
+\end{equation}
+Theorem~\ref{thm:gf} then applies
+to the empirical covariance. The distance estimate follows from
+Lemma~\ref{lem:pl}. More generally, any valid quadratic-growth constant
+$\lambda$ gives $\dist(\Svu_t,\cS_\star)^2\le2\Delta_t/\lambda$.
+\end{proof}
+\begin{proposition}[The Gaussian initial-error cost]\label{prop:gaussian}
+For independent $u_i\sim N(0,\sigma^2\Id_{d_u})$ and
+$v_i\sim N(0,\sigma^2\Id_{d_v})$, and the quadratic loss
+$\ell(S):=\norm{S-\Svu_\star}_{\F}^2/2$, one has exactly
+\begin{equation}\label{eq:gaussian-error}
+ \mathbb E\Delta_0
+ =\tfrac12\norm{\Svu_\star}_{\F}^2+\frac{\sigma^4d_ud_v}{2n}.
+\end{equation}
+\end{proposition}
+
+For balanced dimensions and fixed $\sigma$, width $n$ proportional to $m$
+therefore gives an expected initial sampling error of order $m$, despite
+the dimension-free exponent $4(1-\varepsilon)\sigma^2\kappa$ at any
+fixed relative tolerance $\varepsilon\in(0,1)$. Keeping that error bounded
+in expectation requires $n$ of order $d_ud_v$, when the teacher norm is
+fixed. Thus width proportional to $m$ can preserve the convergence rate
+while allowing the expected initial error to grow with dimension.
+
+\begin{proof}[Proof of Proposition~\ref{prop:gaussian}]
+Each entry of $n^{-1}\sum_i v_i u_i^\top$ has mean zero and variance
+$\sigma^4/n$. Sum these variances; the cross term with the teacher has
+zero expectation.
+\end{proof}
+
+\subsection{Discrete-Time Convergence}\label{app:gd}
+The factor update transports the initial supporting inequalities even
+though it no longer preserves $J$ exactly. To track this error, define
+\begin{equation}\label{eq:gd-signature}
+\Phi_0:=\Id,\quad\Phi_{k+1}:=M_k\Phi_k,\quad
+\mathcal J_k:=\Phi_kJ\Phi_k^\top,\quad\mathcal D_k:=\mathcal J_k-J.
+\end{equation}
+The cross block of \eqref{eq:gd-covariance} also gives
+\begin{equation}\label{eq:gd-predictor-update}
+ \Svu_{k+1}-\Svu_k
+ =-\tau(E_k\Suu_k+\Svv_kE_k)+\tau^2E_k(\Svu_k)^\top E_k.
+\end{equation}
+The next two lemmas control the accumulated defect $\mathcal D_k$ and
+the quadratic correction in the predictor update.
+
+\begin{lemma}[Transported support and accumulated defect]\label{lem:gd-support}
+If $\Sigma_0\succeq0$, with initial margins $\aplus{\Sigma_0},\aminus{\Sigma_0}$ as in
+\eqref{eq:margins}, then every finite iterate satisfies
+\[
+ \Sigma_k-\aplus{\Sigma_0}\mathcal J_k\succeq0,\qquad
+ \Sigma_k+\aminus{\Sigma_0}\mathcal J_k\succeq0.
+\]
+If $\norm{\mathcal D_k}_{\op}\le\eta$ for some $\eta\in[0,1)$, then
+$\Suu_k\succeq(1-\eta)\aplus{\Sigma_0}\Id$ and
+$\Svv_k\succeq(1-\eta)\aminus{\Sigma_0}\Id$. With $e_k:=\norm{E_k}_{\F}$,
+\begin{equation}\label{eq:gd-defect-recursion}
+ \mathcal D_{k+1}=M_k\mathcal D_kM_k+\tau^2G_kJG_k,\qquad
+ \norm{\mathcal D_N}_{\op}
+ \le\tau\exp\left(2\sum_{j<N}\tau e_j\right)
+             \sum_{j<N}\tau e_j^2.
+\end{equation}
+\end{lemma}
+
+\begin{proof}[Proof of Lemma~\ref{lem:gd-support}]
+The proof of Proposition~\ref{lem:margins} gives the initial supporting
+inequalities. Congruence by $\Phi_k$ transports them, regardless of
+invertibility. The $uu$ and $vv$ blocks of $\mathcal J_k$ are respectively
+at least $(1-\eta)\Id$ and at most $-(1-\eta)\Id$, proving the hidden
+lower bounds. Since $G_kJ+JG_k=0$, one has
+$M_kJM_k=J+\tau^2G_kJG_k$, giving the recursion. Its norm is at most
+$(1+\tau e_k)^2\norm{\mathcal D_k}_{\op}+\tau^2e_k^2$.
+Unroll from zero and bound the amplification products by
+$\exp(2\sum_{j<N}\tau e_j)$.
+\end{proof}
+\paragraph{Descent and length.}
+The bootstrap needs two estimates: loss descent and a finite total
+gradient length. The next lemma obtains both from the same step condition.
+For the proof, abbreviate the descent scale, initial gradient bound, and
+covariance bound as
+\begin{equation}\label{eq:gd-constants}
+ \alpha_\star:=\frac{\gap{\Sigma_0}}{2\sqrt2},\qquad
+ M_{\nabla}:=\sqrt{2L\Delta_0},\qquad
+ B_\star:=\norm{\Sigma_0}_{\op}e^{2I_\star}.
+\end{equation}
+Then $I_\star=\sqrt{2\Delta_0/\kappa}/\alpha_\star$ and
+$q=1-2\alpha_\star\kappa\tau$. Condition~\eqref{eq:gd-step} is
+equivalent to requiring both
+$\tau\le\alpha_\star/(B_\star M_{\nabla}+\frac92LB_\star^2)$ and
+$\tau\le(1-1/\sqrt2)\alpha_\star/(e^{2I_\star}\Delta_0)$.
+\begin{lemma}[Descent with unequal hidden lower bounds]\label{lem:gd-descent}
+Suppose $\norm{\Sigma_k}_{\op}\le B$, $\Delta_k\le\Delta_0$,
+$\Suu_k\succeq b_+\Id$, and $\Svv_k\succeq b_-\Id$.
+Write $h:=b_++b_->c>0$. If $\tau M_{\nabla}\le1$ and
+$\tau(BM_{\nabla}+\frac92LB^2)\le h-c$, then
+\begin{equation}\label{eq:gd-descent}
+ \Delta_{k+1}\le\Delta_k-c\tau e_k^2
+ \le(1-2c\kappa\tau)\Delta_k.
+\end{equation}
+If this descent holds for $j=r,\ldots,N-1$, then
+\begin{equation}\label{eq:gd-length}
+ \sum_{j=r}^{N-1}\tau e_j^2\le\Delta_r/c,\qquad
+ \sum_{j=r}^{N-1}\tau e_j
+ \le\frac1c\sqrt{\frac2\kappa}
+            (\sqrt{\Delta_r}-\sqrt{\Delta_N}).
+\end{equation}
+\end{lemma}
+
+\begin{proof}[Proof of Lemma~\ref{lem:gd-descent}]
+Let $Z:=\Svu_{k+1}-\Svu_k$. By \eqref{eq:gd-covariance} and smoothness,
+$\norm Z_{\F}\le3\tau Be_k$ and
+$\ip{E_k}{Z}\le-\tau h e_k^2+\tau^2BM_{\nabla}e_k^2$.
+The descent lemma therefore gives the first assertion. Telescope it for
+the squared-gradient sum. At positive loss gap, PL gives
+\[
+ \sqrt{\Delta_j}-\sqrt{\Delta_{j+1}}
+ \ge\frac{c\tau e_j^2}{2\sqrt{\Delta_j}}
+ \ge c\tau\sqrt{\kappa/2}\,e_j.
+\]
+At zero loss gap $e_j=0$. Summation proves the length bound.
+\end{proof}
+
+The proof below also establishes the following explicit tails in
+Theorem~\ref{thm:gd}:
+\begin{equation}\label{eq:gd-tails}
+ \frac{\norm{W_k-W_\infty}_{\F}}{\sqrt n}
+ \le\sqrt{2B_\star}\,I_\star q^{k/2},\qquad
+ \norm{\Sigma_k-\Sigma_\infty}_{\op}
+ \le2B_\star I_\star q^{k/2}.
+\end{equation}
+
+\begin{proof}[Proof of Theorem~\ref{thm:gd}]
+Let $\eta:=1-1/\sqrt2$. Since $\gap{\Sigma_0}\le2B_0$ for
+$B_0:=\norm{\Sigma_0}_{\op}$, one has
+$\alpha_\star\le B_0/\sqrt2\le B_\star/\sqrt2$.
+The first restriction in \eqref{eq:gd-step} implies
+\[
+ \tau M_{\nabla}<1/\sqrt2,\qquad
+ 0<2\alpha_\star\kappa\tau
+ \le\frac{4\kappa\alpha_\star^2}{9LB_\star^2}\le\frac29.
+\]
+In particular $q\in[7/9,1)$.
+Inductively suppose, through iterate $N$, that
+$\Delta_k\le q^k\Delta_0$,
+$\norm{\Sigma_k}_{\op}\le B_\star$, and
+$\norm{\mathcal D_k}_{\op}\le\eta$, with descent proved for $k<N$.
+These assertions start at $N=0$ since $\mathcal D_0=0$.
+At $N$, Lemma~\ref{lem:gd-support} supplies hidden lower bounds with sum
+$(1-\eta)\gap{\Sigma_0}=2\alpha_\star$. Lemma~\ref{lem:gd-descent} applies with
+$c=\alpha_\star$, $h=2\alpha_\star$, and $B=B_\star$, proving the next
+loss-gap estimate. Its finite-horizon sums now give
+\[
+ \sum_{j=0}^{N}\tau e_j\le I_\star,\qquad
+ \sum_{j=0}^{N}\tau e_j^2\le\Delta_0/\alpha_\star.
+\]
+Thus $\norm{\Phi_{N+1}}_{\op}\le e^{I_\star}$ implies the next covariance
+upper bound, and \eqref{eq:gd-defect-recursion} gives
+$\norm{\mathcal D_{N+1}}_{\op}
+\le\tau e^{2I_\star}\Delta_0/\alpha_\star\le\eta$.
+This closes the induction.
+
+Taking tails in \eqref{eq:gd-length} yields
+$\sum_{j\ge k}\tau e_j\le I_\star q^{k/2}$.
+Factor increments have norm
+\[
+ \norm{W_{j+1}-W_j}_{\F}/\sqrt n
+=\tau\sqrt{\tr(G_j\Sigma_jG_j)}
+\le\tau\sqrt{2B_\star}\,e_j.
+\]
+This proves factor convergence and its tail estimate. Similarly
+$\norm{\Phi_k-\Phi_\infty}_{\op}\le e^{I_\star}I_\star q^{k/2}$
+gives the covariance tail bound by subtracting the two congruences.
+The limit predictor is optimal by continuity and the loss-gap bound.
+Finally, if $r:=\tau M_{\nabla}<1$, every factor update is invertible and
+\[
+ \sigma_{\min}(\Phi_k)\ge\exp\left(-\frac{I_\star}{1-r}\right),\qquad
+ \lambda_{\min}^{+}(\Sigma_k)\ge\lambda_{\min}^{+}(\Sigma_0)
+ \exp\left(-\frac{2I_\star}{1-r}\right).
+\]
+Indeed $\sigma_{\min}(M_j)\ge1-\tau e_j>0$ and
+$\log(1-x)\ge-x/(1-r)$ for $0\le x\le r$. The bound makes
+$\Phi_\infty$ invertible, proving rank preservation also at the limit.
+\end{proof}
+The factor-increment estimate also applies to population discrete
+pushforward updates. Coupling each particle with its limiting position
+gives a Wasserstein tail at most $\sqrt{2B_\star}I_\star q^{k/2}$.
+
+\paragraph{White initialization and local stability}
+For exact white empirical initialization
+$\Sigma_0=W_0W_0^\top/n=\sigma^2\Id_m$ and $\Delta_0=\ell(0)-\ell_\star>0$,
+$I_\star=2\sqrt{\Delta_0}/(\sigma^2\sqrt\kappa)$ and the explicit
+condition is
+\[
+ \tau\le\min\left\{
+ \frac1{2e^{2I_\star}\sqrt{L\Delta_0}
+                 +\frac9{\sqrt2}L\sigma^2e^{4I_\star}},\quad
+ \frac{(\sqrt2-1)\sigma^2}{2e^{2I_\star}\Delta_0}
+ \right\}.
+\]
+The contraction factor is $1-\sqrt2\kappa\sigma^2\tau$.
+Here the empirical covariance is exactly $\sigma^2\Id_m$. For iid Gaussian
+initialization, its fluctuations are handled by Corollary~\ref{cor:sampled-gd}.
+As $\Delta_0\downarrow0$ with $\sigma,L,\kappa$ fixed, the sufficient
+threshold tends to $\sqrt2/(9L\sigma^2)$.
+
+
+\begin{remark}[Local stability and the global stepsize]\label{rem:gd-local}
+Suppose $\ell$ is $C^2$ near a minimizer at zero, and linearize at
+$\Sigma=\sigma^2\Id$. The predictor perturbation evolves to first order by
+$\delta\Svu\mapsto(\Id-2\tau\sigma^2\nabla^2\ell(0))[\delta\Svu]$.
+Thus $0<\tau<1/(L\sigma^2)$ contracts its nonzero-curvature directions;
+kernel directions are neutral at this order. Theorem~\ref{thm:gd} additionally controls
+covariance growth and the accumulated signature defect along the entire
+trajectory, explaining its more restrictive global threshold.
+\end{remark}
+
+\paragraph{Adjustable rate budgets.}
+Smaller steps permit a smaller loss in the conserved conditioning,
+bringing the discrete exponent closer to its continuous-time value.
+\begin{proposition}[Adjustable rate budgets]\label{prop:gd-adjustable}
+Under the loss and initialization assumptions of Theorem~\ref{thm:gd},
+choose $0<c<h<\gap{\Sigma_0}$ and set
+$I_c:=\sqrt{2\Delta_0/\kappa}/c$, $B_c:=B_0e^{2I_c}$.
+The convergence and rank conclusions of Theorem~\ref{thm:gd} hold with
+contraction factor $q_c:=1-2c\kappa\tau$, and the tail bounds
+\eqref{eq:gd-tails} hold with $(I_\star,B_\star,q)$ replaced by
+$(I_c,B_c,q_c)$, if
+\[
+ 0<\tau\le\min\left\{\frac1{2M_{\nabla}},\
+ \frac{h-c}{B_cM_{\nabla}+\frac92LB_c^2},\
+ \frac{(1-h/\gap{\Sigma_0})c}{e^{2I_c}\Delta_0}\right\}.
+\]
+\end{proposition}
+
+Taking $c=(1-\epsilon)\gap{\Sigma_0}$, $h=(1-\epsilon/2)\gap{\Sigma_0}$ for any
+$\epsilon\in(0,1)$ certifies exponent $2\kappa(1-\epsilon)\gap{\Sigma_0}$ in time
+$k\tau$, at an explicit sufficiently small step. This is arbitrarily
+close to the flow exponent.
+
+\begin{proof}[Proof of Proposition~\ref{prop:gd-adjustable}]
+Use $\eta=1-h/\gap{\Sigma_0}$ in the preceding induction and
+Lemma~\ref{lem:gd-descent} with $c,h$. The positivity guard follows from
+$c(h-c)\le \gap{\Sigma_0}^2/4\le B_0^2$: $2c\kappa\tau\le4/9$.
+The remaining estimates use $I_c,B_c$.
+\end{proof}
+\begin{corollary}[A stepsize fixed before sampling]\label{cor:sampled-gd}
+Use the population parameters and width condition of
+Theorem~\ref{thm:sampling-budgets}, with the bounds in
+\eqref{eq:sampling-event}, and define before sampling
+\[
+ \overline\alpha_\star:=\frac{\underline g}{2\sqrt2},\quad
+ \overline M_{\nabla}:=\sqrt{2L\overline\Delta},\quad
+ \overline I_\star:=\frac1{\overline\alpha_\star}
+                    \sqrt{\frac{2\overline\Delta}{\kappa}},\quad
+ \overline B_\star:=\overline B_0e^{2\overline I_\star}.
+\]
+Choose a deterministic positive stepsize satisfying
+\begin{equation}\label{eq:sampled-gd-step}
+ \tau\le\min\left\{
+ \frac{\overline\alpha_\star}
+ {\overline B_\star\overline M_{\nabla}+\frac92L\overline B_\star^2},\quad
+ \frac{(1-1/\sqrt2)\overline\alpha_\star}
+ {e^{2\overline I_\star}\overline\Delta}\right\}.
+\end{equation}
+With probability at least $1-\delta$, factor GD converges to an optimal
+predictor, and
+\[
+ \Delta_k
+ \le(1-2\overline\alpha_\star\kappa\tau)^k\Delta_0
+ \le(1-2\overline\alpha_\star\kappa\tau)^k\overline\Delta.
+\]
+Its factor/covariance tail estimates hold with the corresponding barred
+constants and contraction factor.
+\end{corollary}
+
+At fixed relative tolerance, the sampled stepsize can deteriorate with
+the dimension through $\overline\Delta$. The independent absolute
+accuracy budget controls this initial-loss contribution.
+
+
+\begin{proof}[Proof of Corollary~\ref{cor:sampled-gd}]
+On \eqref{eq:sampling-event}, the empirical descent scale is at least
+$\overline\alpha_\star$, whereas the empirical loss gap, force bound, length
+bound, and covariance upper bound are at most their barred counterparts.
+Both admissible stepsize terms increase with the descent scale and
+decrease with the loss gap and initial covariance norm. Hence the chosen
+step satisfies Theorem~\ref{thm:gd} for the empirical initialization.
+Its contraction factor is no larger than the stated one. If the realized
+initial loss gap vanishes, the empirical factors are stationary, and the
+conclusions hold directly.
+\end{proof}
+
+\paragraph{Boundary cases.}
+For the scalar loss $\ell(s):=(s+1)^2/2$, the singular initialization
+$U_0=V_0\ne0$ preserves equality of the factors and keeps
+$\Svu_k=\norm{U_k}^2/n\ge0$, so its loss gap is at least $1/2$.
+Conversely, even white initialization does not justify arbitrary steps:
+for $\ell(s):=(s-1)^2/2$, $\Sigma_0=\Id_2$, and $\tau=1$, one gets
+$\Sigma_1=\bigl(\begin{smallmatrix}2&2\\2&2\end{smallmatrix}\bigr)$
+and $\Sigma_2=0$, after which training is trapped.
+
+\subsection{Deep Linear Residual Networks}\label{app:resnets}
+Write
+$P_{b:a}:=A_b\cdots A_a$ when $a\le b$, and $P_{b:a}:=\Id$ otherwise.
+Thus $P_{>s}=P_{S-1:s+1}$ and $P_{<s}=P_{s-1:0}$.
+Differentiating $P_S=P_{>s}A_sP_{<s}$ gives
+\begin{equation}
+  \label{eq:resnet-layer-gradient}
+\nabla_{\Svu_s}\ell(P_S)
+=h\widetilde E_s,
+\qquad
+\widetilde E_s=P_{>s}^\top E P_{<s}^\top.
+\end{equation}
+In residual mean-field time the particle equations are
+$(\dot u_{s,i},\dot v_{s,i})
+=-(\widetilde E_s^\top v_{s,i},\widetilde E_su_{s,i})$.
+The cross block of \eqref{eq:resnet-layer-bures} is therefore
+$\dot\Svu_s=-\widetilde E_s\Suu_s-\Svv_s\widetilde E_s$.
+
+In the finite-depth setting of Theorem~\ref{thm:resnet-finite}, put
+$\overline{\sigma}_S:=(1+B/S)^{S-1}$ and
+$I_{\rm res}:=\overline{\sigma}_S(\overline g_S\underline{\sigma}_S^2)^{-1}\sqrt{2\Delta_0/\kappa}$.
+The proof gives the common layer-force tail
+\begin{equation}\label{eq:resnet-length}
+ \int_t^\infty\norm{\widetilde E_s(r)}_{\F}\,\dd r
+ \le I_{\rm res}e^{-\kappa\overline g_S\underline{\sigma}_S^2t}.
+\end{equation}
+
+\begin{proof}[Proof of Theorem~\ref{thm:resnet-finite}]
+Write $g_s:=\gap{\Sigma_s(0)}$ within this proof.
+The endpoint derivative and layer covariance equations give
+\[
+ -\dot\Delta
+ =\frac1S\sum_{s=0}^{S-1}
+ \left[\tr(\widetilde E_s^\top \widetilde E_s\Suu_s)+\tr(\widetilde E_s\widetilde E_s^\top\Svv_s)\right]
+ \ge\frac1S\sum_{s=0}^{S-1}g_s\norm{\widetilde E_s}_{\F}^2.
+\]
+Both the lower and upper singular-value bounds of the residual factors
+multiply through the prefix and suffix, so
+$\underline{\sigma}_S\norm E_{\F}\le\norm{\widetilde E_s}_{\F}\le \overline{\sigma}_S\norm E_{\F}$.
+Therefore
+\[
+ -\dot\Delta\ge\overline g_S\underline{\sigma}_S^2\norm E_{\F}^2
+ \ge2\kappa\overline g_S\underline{\sigma}_S^2\Delta.
+\]
+This proves the loss bound on each finite existence interval using the
+average layer margin. The square-root PL
+argument used in Theorem~\ref{thm:gf}, followed by the upper force bound,
+gives \eqref{eq:resnet-length} first with any finite endpoint.
+Thus all layer fundamental matrices and their inverses have norm at most
+$e^{I_{\rm res}}$. Their covariances remain bounded and positive definite.
+The finite-dimensional vector field is locally Lipschitz; these bounds
+prevent a finite maximal existence time. The force-tail bound now holds
+on $[t,\infty)$ and implies layer convergence by the argument of
+Theorem~\ref{thm:gf}. Continuity of the finite residual product proves
+optimality of its limit.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:resnet-continuous}]
+The $L^1$ training equation in Section~\ref{sec:resnets} means
+\begin{equation}\label{eq:resnet-integral}
+ \Sigma_s(t)=\Sigma_s(0)-\int_0^t
+ (\widetilde G_s(r)\Sigma_s(r)+\Sigma_s(r)\widetilde G_s(r))\,\dd r,
+ \qquad\widetilde G_s=G_{\widetilde E_s}.
+\end{equation}
+This equality in $L^1$ gives an absolutely continuous representative for
+almost every layer. The path bound makes the forces uniformly bounded
+over depth on finite training intervals, justifying differentiation
+of the endpoint and integration over depth.
+An $L^1$ residual field has invertible propagators. Gronwall applied to
+each propagator and its inverse gives
+$e^{-B}\norm E_{\F}\le\norm{\widetilde E_s}_{\F}\le e^B\norm E_{\F}$.
+The depth integrals of the conserved supporting inequalities yield
+\[
+ -\dot\Delta
+ =\int_0^1\left[\tr(\widetilde E_s^\top \widetilde E_s\Suu_s)
+                    +\tr(\widetilde E_s\widetilde E_s^\top\Svv_s)\right]\,\dd s
+ \ge\overline g e^{-2B}\norm E_{\F}^2.
+\]
+These integrals are finite by the $L^1$ covariance assumption and the
+uniform-in-depth force bounds. PL proves \eqref{eq:continuous-resnet-rate}.
+As $\gap{\Sigma_s(0)}>0$ almost everywhere and
+$\gap{\Sigma_s(0)}\le2\norm{\Sigma_s(0)}_{\op}$, its integral is finite and positive.
+The square-root argument gives the common layer-force tail bound
+\[
+ \int_t^\infty\norm{\widetilde E_s(r)}_{\F}\,\dd r
+ \le I_{\rm res}e^{-\kappa\overline g e^{-2B}t},\qquad
+ I_{\rm res}:=\frac{e^{3B}}{\overline g}
+                         \sqrt{\frac{2\Delta_0}{\kappa}}.
+\]
+The fundamental-matrix argument proves almost-everywhere convergence
+and positive definiteness. The covariance tails are bounded by
+$2e^{2I_{\rm res}}\norm{\Sigma_s(0)}_{\op}I_{\rm res}
+e^{-\kappa\overline g e^{-2B}t}$, an integrable bound over depth.
+This proves $L^1$ convergence. Continuity of the endpoint map on bounded
+$L^1$ sets, obtained by variation of constants and Gronwall, proves
+optimality of the limiting endpoint.
+\end{proof}
+
+\begin{remark}[Sharpness of the boundedness hypothesis]
+\label{rem:resnet-path-escape}
+Unlike the two-layer flow of Theorem~\ref{thm:gf}, positive conserved
+layer margins do not rule out unbounded weight growth as $S\to\infty$
+or along continuous-depth training. A linear neural ODE has positive
+determinant, so it cannot fit an orientation-reversing target; training
+may instead approach a singular endpoint through unbounded residuals.
+For a concrete example, take the invertible scalar target $p_\star:=-1$ and loss
+$\ell(p):=(p+1)^2/2$, with $L=\kappa=1$. Initialize every layer with
+$\Sigma_s(0)=\Id_2$, realizable at width $n=2$; every conserved support
+gap equals $2$. At each finite depth $S\ge2$, all residuals decrease
+to $-S$, so $\sup_{t\ge0}\max_s|\Svu_s(t)|=S$ and no uniform $B<S$
+exists. In continuous depth they decrease without bound, giving
+$\sup_{t\ge0}\int_0^1|\Svu_s(t)|\,\dd s=\infty$.
+Both flows are global, but their endpoints tend to zero and their losses
+to $1/2>\ell_\star=0$. At finite depth the target is representable:
+failure occurs along this symmetric trajectory, whereas the neural ODE
+excludes the target altogether. In both cases, positive conserved margins
+therefore fail to ensure the residual bounds required by the theorems.
+\end{remark}
+
+\begin{proof}[Verification of Remark~\ref{rem:resnet-path-escape}]
+The scalar target $-1$ is invertible, and
+$|\ell'(p)|^2=(p+1)^2=2\ell(p)$, so $L=\kappa=1$ and
+$\ell_\star=0$. The width-two initialization
+$U_s(0)=(\sqrt2,0)$, $V_s(0)=(0,\sqrt2)$ gives
+$\Sigma_s(0)=\Id_2$ and initial endpoint $1$ at every depth.
+For scalar layers write $a_s:=\Suu_s=\Svv_s$ and
+$r_s:=\Svu_s$. Equality of the diagonal blocks is preserved, and the
+layer equations reduce to
+\[
+ \dot a_s=-2\widetilde E_s r_s,\qquad
+ \dot r_s=-2\widetilde E_s a_s.
+\]
+Thus $a_s^2-r_s^2=1$, and positivity gives
+\[
+ \Sigma_s(t)=\begin{pmatrix}
+  \sqrt{1+r_s(t)^2}&r_s(t)\\
+  r_s(t)&\sqrt{1+r_s(t)^2}
+ \end{pmatrix}.
+\]
+The eigenvalues of $J\Sigma_s$ are $\pm1$, whereas those of
+$\Sigma_s$ are $\sqrt{1+r_s^2}\pm|r_s|>0$.
+Uniqueness and symmetry preserve identical layers. Denote their common
+residual by $r_S$. At finite depth,
+$\widetilde E_s=(p_S+1)(1+r_S/S)^{S-1}$, giving
+\begin{equation}\label{eq:resnet-escape-finite}
+ \begin{aligned}
+ p_S&=(1+r_S/S)^S,\qquad r_S(0)=0,\\
+ \dot r_S&=-2\sqrt{1+r_S^2}\big((1+r_S/S)^S+1\big)(1+r_S/S)^{S-1}.
+ \end{aligned}
+\end{equation}
+For $S\ge2$, its vector field is locally Lipschitz and vanishes at $r_S=-S$.
+Starting at zero, the solution decreases and cannot reach this equilibrium
+in finite time. It stays in the compact interval $[-S,0]$, so it is global.
+Any limit strictly above $-S$ would have strictly negative velocity;
+hence its limit is $-S$, $p_S\to0$, and $\ell(p_S)\to1/2$.
+In particular, every candidate bound $B<S$ is exceeded at a finite
+training time, although $|r_S(t)|<S$ at every finite time.
+
+The finite-depth architecture can represent $-1$ by taking one residual
+factor equal to $-1$ and the others equal to $1$. The obstruction here
+is the preserved symmetry of the initialized trajectory: all its
+residual factors stay positive and approach zero. At $S=1$, this
+obstruction disappears; $\dot r_1=-2\sqrt{1+r_1^2}(r_1+2)$ instead
+gives $r_1\to-2$ and the optimal endpoint $-1$.
+
+For a depth-constant field, the continuous propagators are
+$P_{b,a}=e^{(b-a)r}$, so $\widetilde E_s=(e^r+1)e^r$ and
+\begin{equation}\label{eq:resnet-escape-continuous}
+ p=e^r,\qquad \dot r=-2\sqrt{1+r^2}(e^r+1)e^r,\qquad r(0)=0.
+\end{equation}
+For $r\le0$ its velocity is bounded, strictly negative, and has no finite
+zero. The solution is therefore global and tends to $-\infty$.
+Since $\int_0^1|\Svu_s(t)|\,\dd s=|r(t)|$, every finite integral
+bound is eventually exceeded as well. The endpoint tends to zero.
+The limiting loss $1/2$ is the infimum over positive scalar endpoints
+and exceeds the ambient minimum $\ell_\star=0$.
+The associated depth-constant covariance is a global locally absolutely
+continuous $L^1$ trajectory, positive definite at every finite time.
+Moreover, for $S\ge2$ and $-S<r_S\le0$,
+$(1+r_S/S)^{S-1}\le e^{r_S/2}$ and $(1+r_S/S)^S+1\le2$.
+Since $\sqrt{1+r^2}e^{r/2}\le1$ for $r\le0$, both $|\dot r_S|$ and
+$|\dot r|$ are at most $4$. On $[0,T]$, all residuals therefore lie in
+$[-4T,0]$. The finite-depth vector fields converge uniformly on this
+compact interval, and continuous dependence gives $r_S\to r$ uniformly
+on every bounded training interval $[0,T]$.
+\end{proof}
+
+\begin{remark}[Zero-target variant]
+The same path bounds can fail while the loss tends to zero. With
+$\ell(p):=p^2/2$ and the same initialization, the equations are
+$\dot r_S=-2\sqrt{1+r_S^2}(1+r_S/S)^{2S-1}$ and
+$\dot r=-2\sqrt{1+r^2}e^{2r}$. The preceding argument gives
+$r_S\to-S$ for every $S\ge1$, $r\to-\infty$ in continuous depth,
+and endpoints tending to the zero target. A uniform residual-path
+bound would keep the endpoints bounded away from zero instead.
+\end{remark}
+
+\begin{remark}[Residual-path control and orientation]
+Positive-definite layer covariances can coexist with singular residual
+products. For a scalar depth-two network, take both layer predictors equal to $-2$,
+so $A_0=A_1=0$, and the endpoint loss $\ell(p):=(p-1)^2/2$.
+Both backpropagated gradients vanish although the endpoint is not optimal.
+These predictors admit positive-definite layer covariances
+$\bigl(\begin{smallmatrix}\sqrt5&-2\\-2&\sqrt5\end{smallmatrix}\bigr)$,
+whose signed eigenvalues are $+1,-1$. Extending the earlier discretization and sampling arguments to this setting
+requires control of the residual products along the corresponding training
+trajectory; the two-layer GD theorem does not apply verbatim.
+
+In continuous depth, $\det P(t)=
+\exp(\int_0^1\tr\Svu_s(t)\,\dd s)>0$.
+The uniform path bound also keeps $\sigma_{\min}(P(t))\ge e^{-B}$,
+so any convergent endpoint remains in the orientation-preserving
+invertible component. If every global minimizer has negative determinant,
+these path bounds are incompatible with convergence to a global minimizer.
+\end{remark}
+
+\subsection{Heavy-ball Momentum}\label{app:momentum-proof}
+We first expand the closed phase equation, then establish global
+existence, position-deformation estimates, and the energy bootstrap.
+For positions $x:=(u,v)$ and velocities $y:=(p,q)$, let
+$\nu_t\in\cP_2(\R^{2m})$ be their joint distribution. Its covariance is
+$\Phase_t:=\int\binom xy\binom xy^{\!\top}\,\dd\nu_t(x,y)$,
+with mixed block $\Xi_t:=\int xy^\top\,\dd\nu_t(x,y)$.
+Finite-width factors correspond to
+$\nu_t:=n^{-1}\sum_i\delta_{(x_i(t),y_i(t))}$.
+The characteristics satisfy
+\begin{equation}
+\label{eq:single-particle-momentum-main}
+\dot x=y,\qquad
+\dot y=-G(\Svu)x-\gamma y.
+\end{equation}
+Taking its second moments gives the block system
+\begin{equation}
+\label{eq:phase-block-ode}
+\begin{aligned}
+\dSpos_t&=\Xi_t+\Xi_t^\top,\qquad
+\dot\Xi_t=\Svel_t-\Spos_tG_t-\gamma\Xi_t,\\
+\dSvel_t&=-G_t\Xi_t-\Xi_t^\top G_t-2\gamma\Svel_t.
+\end{aligned}
+\end{equation}
+In particular, the predictor velocity and acceleration are
+\begin{equation}\label{eq:predictor-speed}
+ \dot\Svu=\Sigma^{qu}+\Sigma^{vp},\qquad
+ \ddot\Svu+\gamma\dot\Svu=2\Sqp-E\Suu-\Svv E.
+\end{equation}
+
+\begin{proof}[Proof of Proposition~\ref{prop:phase-laws}]
+Since \(G_t\) is symmetric,
+\(\Mob_t^\top \Jcan+\Jcan\Mob_t=-\gamma \Jcan\).
+Differentiate the two-characteristic pairing and the fundamental-matrix
+identity. Invertibility also gives
+\(\Psi_t\Jcan(\Psi_t)^\top=e^{-\gamma t}\Jcan\), whence
+\(\Jcan\Phase_t=e^{-\gamma t}
+(\Psi_t)^{-\top}(\Jcan\Phase_0)(\Psi_t)^\top\).
+\end{proof}
+
+\begin{proposition}[Global full phase flow]\label{prop:global-phase}
+If $\ell$ is $C^1$, has locally Lipschitz gradient, and is bounded below,
+every $\Phase_0\succeq0$ has a global positive semidefinite solution of
+\eqref{eq:phase-block-ode}.  This assertion alone gives neither uniform position ellipticity
+nor convergence to a minimizer.
+\end{proposition}
+
+\begin{proof}[Proof of Proposition~\ref{prop:global-phase}]
+Local well-posedness follows from local Lipschitz continuity. The linear
+phase characteristic lift preserves positivity. The energy identity gives
+$\tr\Svel_t\le2\cE_0$. Positivity and Cauchy--Schwarz yield
+\[
+ \sqrt{\tr\Spos_t}
+ \le\sqrt{\tr\Spos_0}+t\sqrt{2\cE_0},\qquad
+ \norm{\Xi_t}_{\F}^2\le\tr\Spos_t\tr\Svel_t.
+\]
+The first inequality also follows directly from the $L^2$ triangle
+inequality along characteristics, including times when the trace is zero.
+Every block is bounded on each finite interval; continuation proves
+global existence.
+\end{proof}
+For the matrix calculations in the momentum sections, abbreviate
+$A:=\Spos$ and $B:=\Svel$. Whenever $A\succ0$, define
+\begin{equation}\label{eq:regression}
+ D:=\Xi^\top A^{-1},\qquad Q:=B-DAD^\top\succeq0.
+\end{equation}
+Here $D$ is a regression matrix, not assumed symmetric, and $Q$ is its
+positive semidefinite residual covariance (the Schur complement).
+They encode all phase blocks by $\Xi=AD^\top$ and $B=DAD^\top+Q$.
+\begin{proposition}[General covariance coordinates]\label{prop:regression}
+On the chart $A\succ0$, \eqref{eq:phase-block-ode} is equivalent to
+\begin{equation}\label{eq:regression-ode}
+ \begin{aligned}
+ \dot A&=DA+AD^\top,\\
+ \dot D&=-G-\gamma D-D^2+QA^{-1},\\
+ \dot Q&=-2\gamma Q-DQ-QD^\top.
+ \end{aligned}
+\end{equation}
+Moreover, positive semidefiniteness controls the position deformation:
+\begin{equation}\label{eq:regression-bound-main}
+ \norm D_{\op}^2\le\frac{2\mathcal{K}}{\lambda_{\min}(A)}.
+\end{equation}
+\end{proposition}
+
+
+\begin{proof}[Proof of Proposition~\ref{prop:regression}]
+Differentiate $D=\Xi^\top A^{-1}$ and $Q=B-DAD^\top$, using
+\eqref{eq:phase-block-ode}. This gives the three displayed identities.
+Since $DAD^\top\preceq B$, its trace is at most $2\mathcal{K}$, whereas
+$\lambda_{\min}(A)\norm D_{\op}^2\le\tr(DAD^\top)$.
+\end{proof}
+\begin{lemma}[Conditional phase-energy decay]\label{lem:conditional}
+Under Assumption~\ref{ass:loss}, let a positive semidefinite solution of
+\eqref{eq:phase-block-ode} satisfy $a\Id_m\preceq\Spos_t\preceq b\Id_m$ for
+$0\le t\le T$, where $0<a\le b<\infty$. Put
+$\mathfrak K:=4a\kappa$, $\mathfrak L:=4bL$, and
+$\rho:=\mathfrak L+2\sqrt{2L\cE_0}$. Then
+\begin{equation}\label{eq:conditional}
+ \cE_t\le3\cE_0 e^{-\lambda t},\qquad
+ \lambda:=\frac{a\kappa\gamma}{\rho+2\gamma^2},\qquad 0\le t\le T.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Set $\cN:=\tr(G\Spos G)$, the mean squared particle force.
+The hidden principal blocks are between $a\Id$ and $b\Id$, hence
+\[
+ 2a\norm E_{\F}^2\le\cN\le2b\norm E_{\F}^2.
+\]
+Combining PL with the smooth-gradient upper bound in
+Lemma~\ref{lem:pl}, and applying Cauchy--Schwarz to the phase law, gives
+\begin{equation}\label{eq:conditional-force-bounds}
+ \mathfrak K\Delta\le \cN\le\mathfrak L\Delta,\qquad
+ |\dot\Delta|=|\tr(G\Xi)|\le\sqrt{2\mathcal{K} \cN}.
+\end{equation}
+All second derivatives below are understood almost everywhere. Lipschitz
+continuity of $\nabla\ell$ implies that $E_t$ is locally absolutely
+continuous and $\norm{\dot E_t}_{\F}\le L\norm{\dot\Svu_t}_{\F}$.
+Differentiating \eqref{eq:predictor-speed} gives
+\[
+ \ddot\Delta=H-\cN-\gamma\dot\Delta,\qquad
+ H:=\ip{\dot E}{\dot\Svu}+2\ip E{\Sqp}\le\rho\mathcal{K}.
+\]
+For the last bound, positive phase blocks give
+$\norm{\Sigma^{qu}}_{\F}^2\le b\tr\Sigma^q$ and
+$\norm{\Sigma^{vp}}_{\F}^2\le b\tr\Sigma^p$, hence
+$\norm{\dot\Svu}_{\F}^2\le4b\mathcal{K}$. Also
+$\norm{\Sqp}_{\F}\le\sqrt{\tr\Sigma^q\tr\Sigma^p}\le\mathcal{K}$ and
+$\norm E_{\F}\le\sqrt{2L\cE_0}$.
+
+Choose $\epsilon:=\gamma/[2(\rho+2\gamma^2)]$ and
+$\mathcal V:=\cE+\epsilon\dot\Delta$. Since
+\[
+ \epsilon\le\frac1{4\sqrt{2\rho}}
+ \le\frac1{\sqrt{2\mathfrak L}},\qquad
+ |\dot\Delta|\le\sqrt{\mathfrak L/2}\,\cE,
+\]
+one has $\cE/2\le\mathcal V\le3\cE/2$.
+The inequality $\gamma\sqrt{2\mathcal{K} \cN}\le \cN/4+2\gamma^2\mathcal{K}$ yields
+\[
+ \dot{\mathcal V}\le-\tfrac34\epsilon \cN
+       -\bigl(2\gamma-\epsilon(\rho+2\gamma^2)\bigr)\mathcal{K}
+ \le-\tfrac34\epsilon\mathfrak K\Delta-\gamma\mathcal{K}.
+\]
+Now $\tfrac34\epsilon\mathfrak K\le\gamma$, since $a\kappa\le bL$
+and $\rho\ge4bL$. It follows that
+$\dot{\mathcal V}\le-\tfrac23(\tfrac34\epsilon\mathfrak K)\mathcal V
+=-\lambda\mathcal V$.
+Integrating the a.e. inequality proves \eqref{eq:conditional}.
+
+\end{proof}
+
+Under Theorem~\ref{thm:momentum}, the position-covariance tail is
+\begin{equation}\label{eq:momentum-tail}
+ \norm{\Spos_t-\Spos_\infty}_{\F}
+ \le\frac{4\sqrt{6b_s\cE_0}}{\lambda_s(\gamma)}
+       e^{-\lambda_s(\gamma)t/2}.
+\end{equation}
+For the position factors $W$ or the position marginal of the characteristic
+phase law, the normalized Frobenius or $W_2$ tail has prefactor
+$2\sqrt{6\cE_0}/\lambda_s(\gamma)$ at the same exponent.
+
+\begin{proof}[Proof of Theorem~\ref{thm:momentum}]
+The full phase flow is global by Proposition~\ref{prop:global-phase}.
+On the connected position-positive chart containing time zero, let
+$h(t):=\int_0^t\norm{D_r}_{\op}\,\dd r$.
+The equation $\dot A=DA+AD^\top$ yields
+$A_t=Z_t A_0Z_t^\top$ with $\dot Z=DZ$, $Z_0=\Id_m$, and thus
+\[
+ a_0e^{-2h(t)}\Id_m\preceq A_t\preceq b_0e^{2h(t)}\Id_m.
+\]
+As long as $h\le s$, Lemma~\ref{lem:conditional} and
+Proposition~\ref{prop:regression} imply
+\[
+ h(t)\le\int_0^t\sqrt{2\mathcal{K}_r/a_s}\,\dd r
+ \le\frac{2}{\lambda_s}\sqrt{\frac{6\cE_0}{a_s}}
+ =\mathfrak S_s(\gamma)<s.
+\]
+There is no first time at which $h=s$. Nor can the chart terminate earlier:
+on each such interval $A\succeq a_s\Id$ and the globally defined full
+phase blocks stay bounded on finite horizons. This proves the global tube
+and energy estimate. Furthermore the positive-block factorization gives
+$\norm\Xi_{\F}^2\le b_s\tr B\le6b_s\cE_0 e^{-\lambda_st}$.
+Integrate $\dot A=\Xi+\Xi^\top$ to get \eqref{eq:momentum-tail}.
+For particles or a characteristic phase law, the remaining $L^2$ position displacement is
+at most $2\sqrt{6\cE_0}\,e^{-\lambda_st/2}/\lambda_s$.
+The limit is therefore attained, with zero loss gap and full phase
+covariance $\diag(A_\infty,0)$.
+\end{proof}
+
+If $\cE_0=0$, the nonnegative kinetic and potential energies both vanish,
+the force vanishes, and the momentum trajectory is stationary. Positive
+definiteness of the \emph{phase} covariance is never required; in particular
+zero-speed initialization is covered.
+
+\subsection{An exact decomposition of hidden kinetic energy}
+Prescribing the position covariance and its derivative does not determine
+the kinetic energy: velocity components that leave the covariance
+unchanged can still contribute to it.
+
+\begin{proposition}[Minimum-energy lift of a covariance velocity]\label{prop:kinetic}
+Fix $A\succ0$ and a symmetric matrix $H$ as the desired value of $\dot A$.
+Let $C=C^\top$ be the unique solution of $CA+AC=H$.
+Every positive semidefinite phase covariance with this position moment and
+derivative has regression coordinates
+\[
+ D=C+\Omega,\qquad \Omega A+A\Omega^\top=0,\qquad Q\succeq0,
+\]
+and its kinetic energy decomposes as
+\begin{equation}\label{eq:kinetic-decomposition}
+ \mathcal{K}=\tfrac12\tr(CAC)
+    +\tfrac12\tr(\Omega A\Omega^\top)+\tfrac12\tr Q.
+\end{equation}
+Thus the graph lift $D=C$, $Q=0$ has minimum kinetic energy.
+An additional positive semidefinite Schur complement contributes exactly
+$\tr Q/2$.
+\end{proposition}
+\begin{proof}
+In an eigenbasis of $A$, the Sylvester equation divides $H_{ij}$ by the
+strictly positive sum of eigenvalues, proving existence and uniqueness.
+Equation $DA+AD^\top=H$ is equivalent to the stated condition on $\Omega$.
+Since $B=DAD^\top+Q$, expand its trace. The two cross terms vanish in sum:
+$\Omega A$ is skew-symmetric and $C$ is symmetric. Each term in
+\eqref{eq:kinetic-decomposition} is nonnegative.
+\end{proof}
+
+\begin{example}[Identical position covariance and covariance derivative, arbitrarily large energy]
+Let $A=\sigma^2\Id_m$, $C=0$, choose any skew-symmetric $\Omega$, and set
+$D=\Omega$, $Q=0$. The initial predictor is zero because
+$A=\sigma^2\Id_m$, and $\dot A=0$ makes its derivative zero as well,
+independently of $\Omega$. Nevertheless
+$\mathcal{K}=\sigma^2\norm\Omega_{\F}^2/2$ can be arbitrarily large. The phase
+covariance is positive semidefinite; nonzero $\Omega$ gives a nonsymmetric regression matrix.
+For fixed $a_0,b_0,L,\kappa$, the best feasibility ratio
+\eqref{eq:budget} tends to zero as $\cE_0\to\infty$. Thus the initial
+position covariance and predictor speed do not determine whether the
+energy-damping certificate holds.
+\end{example}
+
+%%% Local Variables:
+%%% mode: LaTeX
+%%% TeX-master: "../paper"
+%%% End:

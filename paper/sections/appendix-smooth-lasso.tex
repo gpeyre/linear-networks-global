@@ -1,0 +1,37 @@
+% !TEX root = ../paper.tex
+\section{A nonquadratic example: smoothed Lasso}
+\label{app:smooth-lasso}
+
+To illustrate the smooth PL loss class beyond quadratic objectives, we repeat the three experiments of
+Figure~\ref{fig:bures-convergence-triptych} with a smoothed entrywise $\ell_1$ penalty on the predictor:
+\begin{equation}\label{eq:smooth-lasso-loss}
+  \ell(S)=\frac12\norm{S-S_{\rm teach}}_{\F}^2
+  +\lambda\sum_{i,j}\Bigl(\sqrt{S_{ij}^2+\delta^2}-\delta\Bigr),
+  \qquad \lambda=0.1,\quad \delta=0.01.
+\end{equation}
+The Hessian is diagonal, with entries
+$1+\lambda\delta^2/(S_{ij}^2+\delta^2)^{3/2}\in[1,1+\lambda/\delta]$.
+Thus $\ell$ is globally $1$-strongly convex and satisfies Assumption~\ref{ass:loss}
+with $\kappa=1$ and $L=11$.
+The penalty acts on $S$, not separately on the factors, so the covariance closure and spectral conservation laws apply without modification.
+Its unique minimizer $S_{\rm reg}$ is generally different from the teacher; we compute it entrywise from
+\[
+  (S_{\rm reg})_{ij}-(S_{\rm teach})_{ij}
+  +\lambda\frac{(S_{\rm reg})_{ij}}{\sqrt{(S_{\rm reg})_{ij}^2+\delta^2}}=0.
+\]
+All loss gaps below are relative to $\ell_\star=\ell(S_{\rm reg})$.
+Positive smoothing does not generally yield exact sparsity; the nonsmooth limit $\delta=0$ is outside Assumption~\ref{ass:loss}.
+
+\begin{figure}[htbp]
+  \centering
+  \resizebox{\linewidth}{!}{\input{../code/figures/bures_smooth_lasso_triptych.pgf}}
+  \captionsetup{font=footnotesize,skip=2pt}
+  \caption{Smoothed-Lasso counterpart of Figure~\ref{fig:bures-convergence-triptych}, using the same dimensions $(d_u,d_v)=(16,9)$, teacher,
+    initialization scales, and sampling seeds.
+    \textbf{(a)} White covariance $\Sigma_0=\alpha\Id_m$ for $\alpha=0.1,0.5,1,5$.
+    Dashed curves are the support-gap envelopes $\Delta_0 e^{-4\alpha\kappa t}$; dotted curves use the internal coarse determinant bound of Remark~\ref{rem:coarse-rate}.
+    \textbf{(b)} One input-output diagonal pair is scaled by $r\in\{0,1/8,\ldots,1\}$.
+    Here $g(\Sigma_0)=2r$; the dashed curve shows the white-reference envelope.
+    \textbf{(c)} The population covariance flow from $\Id_m$ and finite-width flows at widths $n=32,128,512,2048$, with five independent trials each.}
+  \label{fig:smooth-lasso-triptych}
+\end{figure}

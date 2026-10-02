@@ -1,0 +1,100 @@
+% !TEX root = ../main.tex
+% Section: Introduction
+
+\section{Introduction}
+\label{sec:intro}
+
+Two-layer linear networks are nonconvex in their weight factors, even when the
+loss is a simple function of the predictor matrix.  Training moves in the
+lifted space of incoming and outgoing neuron weights, whose second moments act
+as a time-dependent preconditioner on the predictor.  These moments may in
+principle become degenerate and slow down the dynamics, and it is not clear that the dynamics necessarily converge to a globally optimal predictor.
+We consider this question in the rich mean-field scaling, in which both sides of each rank-one neuron evolve, and
+smooth predictor losses satisfying a Polyak--\L{}ojasiewicz (PL) inequality, which subsume the standard quadratic loss.
+% Unlike lazy or neural tangent kernel scalings, the hidden representation is not
+% frozen and its conditioning must be controlled globally in time.
+
+Central to our analysis are width-independent conservation laws for
+the weight covariance: the signed covariance spectrum, relative to the input-output
+block split, supplies conserved supporting inequalities and lower bounds on each hidden-block. The sum of these lower bounds conditions the predictor dynamics: a positive sum
+is sufficient to guarantee global convergence of the predictor loss with an explicit rate. This analysis covers every positive-definite initialization and some singular ones.
+For initial variance $\sigma^2 \Id$, the loss decays with rate at least $4\sigma^2\kappa$, where $\kappa$ is the PL constant.
+
+The covariance viewpoint also makes the result robust to finite-width
+sampling and factor gradient descent. For deep linear ResNets, the same
+conservation argument applied layerwise yields linear convergence
+conditional on a uniform bound on the residual path. With heavy-ball
+momentum, closure is lifted to the joint phase covariance of positions
+and velocities. Conformally transported spectral laws describe its
+geometry, while energy dissipation gives an explicit initialization and
+damping certificate for linear convergence. Special values of the
+conserved quantities further permit lower-dimensional intrinsic dynamics;
+these reductions are described in Appendix~\ref{app:intrinsic}.
+
+\paragraph{Related work}
+% \paragraph{Mean-field flows and feature learning.}
+Mean-field analyses describe the collective evolution of neuron weight
+distributions in wide two-layer networks~\citep{ChizatBach2018,MeiMontanariNguyen2018,RotskoffVandenEijnden2018}.
+These formulations treat broad nonlinear feature maps and often prove asymptotic global optimality or propagation-of-chaos type statements under support, homogeneity, noise, or regularity assumptions.
+In the present linear setting, exact second-moment closure connects
+training to Bures--Wasserstein covariance geometry~\citep{Takatsu2011,BhatiaJainLim2019},
+making a sharp quantitative linear convergence rate available.
+This closure distinguishes our analysis from the NTK~\citep{JacotGabrielHongler2018} and lazy training~\citep{ChizatOyallonBach2019} regime: both incoming and outgoing weights move, and the evolving representation is essential to the rate.
+
+% \paragraph{Linear networks and conservation laws.}
+Deep linear networks have served as a tractable model of the nonconvexity created by matrix products, with results on their landscapes, exact dynamics,
+and convergence~\citep{SaxeMcClellandGanguli2014,Kawaguchi2016,LaurentVonBrecht2018,AroraCohenGolowichHu2019}.
+Finite-width analyses of two-layer matrix factorization furnish convergence guarantees under small, asymmetric, or general initializations~\citep{YeDu2021,XuMinTarmounMalladaVidal2023}, while recent work treats discrete-time low-rank adaptation directly~\citep{MuKlabjan2025}.
+Our result instead starts from a population covariance satisfying a positive \emph{support gap} condition, in particular any positive-definite covariance, and obtains an explicit global rate that survives independent finite-width sampling.
+Related work identifies Gramian differences and balancedness as invariants of factor training~\citep{DuHuLee2018,TarmounFrancaHaeffeleVidal2021} and develops
+a general differential framework for identifying conservation laws~\citep{MarcotteGribonvalPeyre2023}.
+Our mean-field laws are functionals of the neuron distribution that induce
+compatible particle laws at every width. The conserved spectrum of the
+signed covariance yields hidden-block lower bounds without requiring
+a special balancedness identity.
+
+% \paragraph{Deep residual networks}
+Residual networks~\citep{HeZhangRenSun2016Deep,HeZhangRenSun2016Identity} were introduced as architectures built from perturbations of the identity, and their infinite depth limit leads naturally to neural ODEs~\citep{HeZhangRenSun2016Deep,ChenRubanovaBettencourtDuvenaud2018}.
+Mean-field formulations have established global optimality and convergence results under expressivity, regularity, or local PL conditions~\citep{LuMaLuLuYing2020,DingChenLiWright2021,Isobe2023,BarboniPeyreVialard2024COTResNets}.
+Our linear analysis provides a complementary condition: uniform conditioning of the forward and backward residual products is sufficient for convergence.
+
+% \paragraph{Heavy-ball momentum.}
+Momentum turns first-order descent into an inertial, second-order iteration; the heavy-ball method of~\cite{Polyak1964} and Nesterov acceleration~\citep{Nesterov1983} have mature convergence theories, including continuous-time interpretations~\citep{SuBoydCandes2016} and robust-control analyses~\citep{LessardRechtPackard2016}.
+For deep linear networks, \citet{WangLinAbernethy2021,LiuTaoPan2022}
+establish acceleration results under initialization and overparameterization
+conditions. Here the appropriate state variable is the phase covariance, over which the dynamics close.
+We give an explicit energy-damping certificate for global convergence
+with general position-velocity correlations. 
+
+\paragraph{Our contributions}
+Section~\ref{sec:laws} identifies width-independent spectral conservation
+laws and derives uniform hidden-block bounds from their support margins
+(Propositions~\ref{prop:covariance-closure-laws} and~\ref{lem:margins}).
+Their Wasserstein interpretation and local completeness among smooth covariance
+laws common to all split losses are developed in
+Appendices~\ref{app:mean-field} and~\ref{app:law-counting}.
+Section~\ref{sec:convergence} proves global exponential convergence with an explicit rate under a smooth PL predictor loss from every initial covariance with positive
+support gap (Theorem~\ref{thm:gf}).
+The rate survives independent finite-width sampling at width proportional to the population covariance rank, which can be
+as small as $\min(d_u,d_v)$ (Corollary~\ref{cor:finite-width} and
+Remark~\ref{rem:rank-adaptive-width}).
+We establish global linear convergence of factor
+gradient descent under an explicit stepsize bound by controlling the
+accumulated conservation error (Theorem~\ref{thm:gd}).
+Section~\ref{sec:resnets} extends the layerwise argument to finite- and
+continuous-depth linear ResNets under residual-path control
+(Theorems~\ref{thm:resnet-finite} and~\ref{thm:resnet-continuous}), and
+discusses why that control is not automatic (Remark~\ref{rem:resnet-path-escape}
+in Appendix~\ref{app:resnets}).
+Section~\ref{sec:momentum} shows that heavy-ball momentum dynamics closes on the phase covariance and identifies conformal conservation laws (Proposition~\ref{prop:phase-laws}).
+Global exponential convergence is proven under an initial-energy
+and damping condition, including a two-scale white specialization
+(Theorem~\ref{thm:momentum} and Corollary~\ref{cor:two-scale-white-window}).
+A computational toolbox, code reproducing all six article figures, and
+illustrative Jupyter notebooks are available at
+\url{https://github.com/gpeyre/linear-networks-global}.
+
+%%% Local Variables:
+%%% mode: LaTeX
+%%% TeX-master: "../main"
+%%% End:

@@ -1,0 +1,28 @@
+name: Numerical toolbox
+
+on:
+  push:
+    paths: ['code/**', 'pyproject.toml', '.github/workflows/numerics.yml']
+  pull_request:
+    paths: ['code/**', 'pyproject.toml', '.github/workflows/numerics.yml']
+  workflow_dispatch:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.11', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '${{ matrix.python-version }}'
+      - run: python -m pip install '.[figures,notebooks]'
+      - run: python -m unittest discover -s code/tests -v
+      - run: python code/execute_notebooks.py --output outputs/notebooks
+      - run: linear-networks-figures --check --output outputs/paper
+      - uses: actions/upload-artifact@v4
+        with:
+          name: 'numerics-${{ matrix.python-version }}'
+          path: outputs/

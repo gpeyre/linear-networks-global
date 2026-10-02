@@ -1,0 +1,91 @@
+\RequirePackage{fix-cm}
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[authoryear,round]{natbib}
+\setcitestyle{citesep={;},aysep={,},yysep={;}}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\DeclareFontFamily{U}{rsfs}{\skewchar\font127}
+\DeclareFontShape{U}{rsfs}{m}{n}{<-6.5> rsfs5 <6.5-8> rsfs7 <8-> rsfs10}{}
+\usepackage{enumitem,graphicx,wrapfig,longtable,booktabs,tabularx,microtype,needspace}
+\usepackage[colorlinks=true,allcolors=blue]{hyperref}
+\usepackage{macros}
+\usepackage{comment}
+\usepackage{caption}
+\usepackage{pgfplots,import,placeins,xfrac,xurl}
+\pgfplotsset{compat=1.18}
+\graphicspath{{figures/}}
+\usepackage{url}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45\baselineskip plus 1pt minus 1pt}
+\setlength{\emergencystretch}{2em}
+\renewcommand{\topfraction}{0.95}
+\renewcommand{\textfraction}{0.05}
+\raggedbottom
+
+\title{Global Exponential Convergence\\of Two-Layer Linear Network Training}
+\author{Gabriel Peyr\'e\\
+  {\normalsize CNRS, ENS, PSL Univ.}\\
+  {\small\texttt{gabriel.peyre@ens.fr}}
+  \and
+  Stephen Zhang\\
+  {\normalsize Flatiron Institute \& NYU} \\ 
+  {\small\texttt{syz@syz.id.au}}}
+\date{}
+\hypersetup{
+  pdftitle={Global Exponential Convergence of Two-Layer Linear Network Training},
+  pdfauthor={Gabriel Peyr\'e and Stephen Zhang}
+}
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\input{sections/abstract}
+\end{abstract}
+
+\input{sections/introduction}
+\input{sections/model}
+\input{sections/laws}
+\input{sections/convergence}
+\input{sections/sampling}
+\input{sections/resnets}
+\input{sections/momentum}
+\FloatBarrier
+\input{sections/conclusion}
+
+\subsection*{Acknowledgments}
+Gabriel Peyr\'e acknowledges support from the European Research Council through
+the WOLF project, and from France 2030 through grant ANR-23-IACL-0008
+(PRAIRIE-PSAI), administered by the Agence Nationale de la Recherche.
+
+\subsection*{AI use statement}
+In this work, we used generative AI tools including GPT 5.6 and GPT 6 for aiding and polishing writing, research ideation and execution, drafting some sections of the paper, and deriving or proving mathematical claims as directed by the authors. Where outputs were produced by generative AI, these were refined through extensive iteration, verification, and manual editing of the results and exposition. 
+We have reviewed all AI-assisted work, having verified the claims, proofs and other material presented in this paper.
+We take responsibility for the final content of this work, including text, claims or artifacts produced with the aid of generative AI.
+
+\newpage 
+\bibliography{references}
+\bibliographystyle{plainnat}
+\appendix
+\input{sections/notation}
+\input{sections/mean-field}
+\input{sections/appendix}
+\input{sections/appendix-momentum}
+\input{sections/appendix-laws}
+\clearpage
+\input{sections/intrinsic}
+\clearpage
+\input{sections/appendix-smooth-lasso}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: LaTeX
+%%% TeX-master: t
+%%% End:

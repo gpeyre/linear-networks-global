@@ -1,0 +1,120 @@
+\section{Deep Linear Residual Networks}
+\vspace{-0.5em}
+\label{sec:resnets}\label{sec:deep-resnets}
+We now turn to deep linear residual networks (ResNets), including a continuous-depth formulation.
+To stabilize optimization as depth increases, the networks considered here use skip connections between successive layers and scale each residual update by the inverse depth.
+In this section, we demonstrate that linear ResNets also enjoy global exponential convergence rates that remain uniform across depths,
+provided the average conserved layer support gap is bounded away from zero and the residual predictors satisfy an a priori operator-norm bound independent of depth throughout training.
+The latter is an additional hypothesis: layerwise conservation alone does not control forward and backward propagation.
+For simplicity, we state the results for gradient flow, as in Section~\ref{sec:balanced-convergence}.
+
+\paragraph{Finite-depth setting}
+We consider a depth-$S$, width-$n$ network with matching input and output dimensions $d_u=d_v=d$, and set $h:=1/S$.
+For $s=0,\ldots,S-1$, layer $s$ has factors $U_s,V_s\in\R^{d\times n}$, covariance $\Sigma_s:=W_sW_s^\top/n$ with $W_s:=\binom{U_s}{V_s}$, and predictor $\Svu_s:=V_sU_s^\top/n$.
+The network maps an input $x^0\in\R^d$ to its output $x^S$ through
+\[
+ x^{s+1}=x^s+\tfrac{1}{Sn}V_sU_s^\top x^s=A_sx^s, \qquad A_s:=\Id+h\Svu_s,\qquad s=0,\ldots,S-1.
+\]
+Thus $x^S=P_Sx^0$, where the endpoint predictor is the ordered product
+\[
+ P_S:=A_{S-1}\cdots A_0
+ =\left(\Id+\tfrac{V_{S-1}U_{S-1}^\top}{Sn}\right)\cdots
+  \left(\Id+\tfrac{V_0U_0^\top}{Sn}\right).
+\]
+Backpropagation in the factors couples the layers through these products, which can be singular even when every layer covariance is positive definite.
+Let $P_{>s}:=A_{S-1}\cdots A_{s+1}$ and $P_{<s}:=A_{s-1}\cdots A_0$, with empty products equal to $\Id$.
+For $E:=\nabla\ell(P_S)$, the backpropagated gradient is $\widetilde E_s:=P_{>s}^\top E P_{<s}^\top$.
+In residual mean-field time, each layer obeys
+\begin{equation}\label{eq:resnet-layer-bures}
+ \dot\Sigma_s=-(\widetilde G_s\Sigma_s+\Sigma_s\widetilde G_s),
+ \qquad \widetilde G_s:=G_{\widetilde E_s}.
+\end{equation}
+This is the covariance equation corresponding to factor gradient flow for $nS\ell(P_S)$. Since $\widetilde G_sJ+J\widetilde G_s=0$,
+the signed margins are conserved separately at every layer.
+
+\begin{theorem}[Finite-depth convergence from conserved layer margins]\label{thm:resnet-finite}
+Under Assumption~\ref{ass:loss} for the endpoint loss, suppose
+$\Sigma_s(0)\succ0$ for all $s$, and write
+$\overline g_S:=S^{-1}\sum_{s=0}^{S-1}\gap{\Sigma_s(0)}$ for the average initial
+support gap. Suppose
+$\sup_s\norm{\Svu_s(t)}_{\op}\le B<S$ for some constant $0 \leq B < \infty$ on the maximal existence interval,
+and define the propagation lower bound $\underline{\sigma}_S:=(1-B/S)^{S-1}$.
+Then the flow is global and
+% \begin{equation}\label{eq:resnet}
+\(\Delta_t:=\ell(P_S(t))-\ell_\star
+ \le\Delta_0e^{-2\kappa\overline g_S\underline{\sigma}_S^2t}\).
+% \end{equation}
+Every layer's covariance and factors converge, and the limiting endpoint
+is globally optimal.
+\end{theorem}
+
+\begin{comment}
+\paragraph{Proof sketch}
+The path bound keeps every forward and backward product invertible,
+so each backpropagated gradient has norm at least $\underline{\sigma}_S\norm E_{\F}$.
+Conservation supplies spectral lower bounds on the hidden blocks, giving
+$-\dot\Delta\ge\overline g_S\underline{\sigma}_S^2\norm E_{\F}^2$; PL yields the rate.
+Upper bounds on the same products, combined with the PL estimate for
+$\sqrt{\Delta_t}$, bound the time integral of each backpropagated gradient's
+Frobenius norm. These bounds prevent finite-time blow-up and prove
+convergence of every layer; see Appendix~\ref{app:resnets}.\qed
+\end{comment}
+
+The rate combines the average support gap $\overline g_S$ with
+$\underline{\sigma}_S^2$. For fixed $B$, this product-conditioning factor tends to
+$e^{-2B}$ and is at least $e^{-4B}$ when $S\ge2B$.
+For fixed $B$, a positive lower bound on the average layer support gap suffices for a convergence rate uniform in depth.
+
+\paragraph{Continuous-depth limit}
+Formally in the limit $S \to \infty$, residual products become propagators of a linear ODE.
+Theorem~\ref{thm:resnet-finite} can be extended to a continuum of residual layers when these propagators stay uniformly conditioned, but requires a well-defined global training trajectory.
+Let $s\in[0,1]$ denote depth. At time $t$, the network maps $x$ to
+$P(t)x$, where $P(t):=X_1(t)$ and $X_s(t)$ solves
+\[
+ \partial_s X_s(t)=\Svu_s(t)X_s(t),\qquad X_0(t)=\Id.
+\]
+Write $P_{b,a}(t)$ for the propagator from depth $a$ to depth $b$. The backpropagated gradient at depth $s$ is
+$\widetilde E_s:=P_{1,s}^\top\nabla\ell(P)P_{s,0}^\top$.
+We assume the covariance profile $s\mapsto\Sigma_s(t)$ is defined for all
+training times $t\ge0$ and depends locally absolutely continuously on $t$
+as an element of $L^1([0,1];\Ssym^{2d})$.
+The layer covariances are positive semidefinite and satisfy
+\eqref{eq:resnet-layer-bures} in $L^1$. Its precise time-integral form is
+\eqref{eq:resnet-integral} in Appendix~\ref{app:resnets}.
+
+\begin{theorem}[Continuous-depth convergence from averaged margins]
+\label{thm:resnet-continuous}
+Under Assumption~\ref{ass:loss} for the endpoint loss, consider a covariance profile satisfying the assumptions above, with $\Sigma_s(0)\succ0$ for almost every $s$.
+Set $\overline g:=\int_0^1\gap{\Sigma_s(0)}\,\dd s\in(0,\infty)$.
+If $\sup_{t\ge0}\int_0^1\norm{\Svu_s(t)}_{\op}\,\dd s\le B<\infty$, then
+\begin{equation}\label{eq:continuous-resnet-rate}
+ \ell(P(t))-\ell_\star
+ \le(\ell(P(0))-\ell_\star)e^{-2\kappa\overline g e^{-2B}t}.
+\end{equation}
+As $t\to\infty$, $\Sigma_s(t) \to \Sigma_s^\infty$ for almost every
+depth $s$, and profiles converge in $L^1([0,1];\Ssym^{2d})$.
+The network defined by the limiting profile attains loss $\ell_\star$.
+Moreover, $\Sigma_s^\infty\succ0$ for almost every $s$, although its smallest
+eigenvalue need not be bounded away from zero uniformly over depth.
+\end{theorem}
+
+\begin{comment}
+\paragraph{Proof sketch}
+With $E=\nabla\ell(P(t))$, Gr\"onwall's inequality bounds the depth propagators $P_{b,a}(t)$ and their inverses, so
+$e^{-B}\norm E_{\F}\le\lVert\widetilde E_s\rVert_{\F}\le e^B\norm E_{\F}$.
+Integrating the layerwise loss-dissipation bounds over depth gives a lower
+bound proportional to the integrated support gap $\overline g$; the PL
+inequality then gives the stated loss-decay rate.
+The resulting bound on $\int_0^\infty\lVert\widetilde E_s(t)\rVert_{\F}\,\dd t$
+is uniform over depth. Together with
+the integrable initial covariance, it yields almost-everywhere and
+$L^1$ convergence. Continuity of the endpoint map gives optimality;
+Appendix~\ref{app:resnets} provides the details.\qed
+\end{comment}
+
+The need for additional residual-path boundedness assumptions arises because the loss depends only on the endpoint $s = 1$: see Remark~\ref{rem:resnet-path-escape} in Appendix~\ref{app:resnets}.
+
+%%% Local Variables:
+%%% mode: LaTeX
+%%% TeX-master: "../paper"
+%%% End:

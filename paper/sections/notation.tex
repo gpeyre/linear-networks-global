@@ -1,0 +1,54 @@
+\clearpage
+\section{Notation table}\label{app:notation}
+The table collects the symbols, their meanings, and their first definitions.
+\begingroup
+\small
+\renewcommand{\arraystretch}{1.12}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.21\linewidth}
+ >{\raggedright\arraybackslash}p{0.53\linewidth}
+ >{\raggedright\arraybackslash}p{0.20\linewidth}@{}}
+\toprule
+Notation & Meaning & First reference\\
+\midrule
+\endfirsthead
+\toprule
+Notation & Meaning & First reference\\
+\midrule
+\endhead
+\(d_u,d_v,n,m\)&Input/output dimensions, width, and \(m:=d_u+d_v\)&Section~\ref{sec:model}\\
+\(U,V,W:=\binom UV,\cL\)&Factor matrices, stacked positions, and factor loss&Section~\ref{sec:model}\\
+\(\Sigma,\Suu,\Svv,\Svu\)&Uncentered moment, hidden blocks, and predictor&Section~\ref{sec:laws}\\
+\(\ell,\ell_\star,\cS_\star\)&Predictor loss, infimum, and minimizer set&Assumption~\ref{ass:loss}; Section~\ref{sec:convergence}\\
+\(L,\kappa,\lambda\)&Smoothness, PL, and QG constants&Assumption~\ref{ass:loss}; Eq.~\eqref{eq:quadratic-growth}\\
+\(\quadH,C_z,\Svu_\star\)&Quadratic Hessian, input second moment, teacher&Section~\ref{sec:model}\\
+\(\mu,\widehat\mu_W\)&Neuron law and empirical law&Appendix~\ref{app:mean-field}\\
+\(E,G_E\)&Predictor gradient and symmetric split generator&Section~\ref{sec:laws}\\
+\(J,\Phi_t\)&Input/output signature and position fundamental matrix&Section~\ref{sec:laws}\\
+\(\mathcal H,\mathcal H_{\varphi,r}\)&Mean-field law and Gram-test law&Def.~\ref{def:mean-field-law}; Eq.~\eqref{eq:gram-mean-field-law}\\
+\(\mathcal H_k,\Gamma\)&Spectral laws and labeled Gram imbalance&Propositions~\ref{prop:covariance-closure-laws}, \ref{prop:mean-field-conservation-laws}\\
+\(a_\pm(\Sigma),\gap{\Sigma}\)&Covariance support margins and gap&Def.~\ref{def:support-gap}\\
+\(\Delta_t,I_0,B_\infty\)&Loss gap, force-length bound, covariance upper bound&Section~\ref{sec:convergence}; Proposition~\ref{prop:gf-lift-tail}\\
+\(\varepsilon,\zeta,\beta\)&Rate tolerance, absolute accuracy, concentration tolerance&Corollary~\ref{cor:finite-width}; Eq.~\eqref{eq:sampling-budgets}\\
+\(\tSigma_0,\widetilde\Delta_0,r_0\)&Population covariance, reference loss gap, and rank; empirical covariance is $\Sigma_0$&Corollary~\ref{cor:finite-width}\\
+\(\underline g,\overline\Delta,\overline B_0\)&Empirical support-gap lower bound, loss-gap and covariance-norm upper bounds&Eqs.~\eqref{eq:sampling-budgets}, \eqref{eq:sampling-event}\\
+\(\tau,I_\star\)&GD step and force-length bound&Eq.~\eqref{eq:gd-algorithm}; Theorem~\ref{thm:gd}\\
+\(\alpha_\star,M_{\nabla},B_\star\)&Proof-local GD descent scale, initial gradient bound, and covariance bound&Eq.~\eqref{eq:gd-constants}\\
+\(M_k,\mathcal J_k,\mathcal D_k\)&Factor update, transported signature, and its defect&Eq.~\eqref{eq:gd-algorithm}, \eqref{eq:gd-signature}\\
+\(S,A_s,P_S,\widetilde E_s\)&Residual depth, layer map, endpoint, and backpropagated gradient&Section~\ref{sec:resnets}\\
+\(\overline g_S,\overline g\)&Finite/continuous depth averages of $\gap{\Sigma_s(0)}$&Theorems~\ref{thm:resnet-finite}, \ref{thm:resnet-continuous}\\
+\(s,B\)&Continuous depth and residual-path bound&Section~\ref{sec:resnets}\\
+\(\underline{\sigma}_S,\overline{\sigma}_S\)&Lower and upper residual-propagation bounds&Section~\ref{sec:resnets}; Appendix~\ref{app:resnets}\\
+\(x:=(u,v),y:=(p,q)\)&Phase position and velocity variables&Section~\ref{sec:momentum}\\
+\(\Phase,\Spos,\Xi,\Svel\)&Full phase moment and its position, mixed, velocity blocks&Eq.~\eqref{eq:phase}\\
+\(\gamma,\Jcan\)&Damping and canonical symplectic matrix&Eq.~\eqref{eq:finite-momentum}, Proposition~\ref{prop:phase-laws}\\
+\(\Mob_t,\Psi_t\)&Phase generator and characteristic matrix&Eq.~\eqref{eq:phase}; Proposition~\ref{prop:phase-laws}\\
+\(D,Q\)&Velocity regression and residual covariance (Schur complement)&Eq.~\eqref{eq:regression}\\
+\(\mathcal{K},\cE\)&Kinetic and total mechanical excess energies; $\cE_t=\Delta_t+\mathcal{K}_t$&Section~\ref{sec:momentum}\\
+\(s,a_s,b_s,\rho_s,\lambda_s,\mathfrak S_s\)&Deformation budget, position tube, force bound, rate, certificate; \(s\) here is not depth&Eq.~\eqref{eq:certificate}\\
+\(\sigma_{vu},\sigma_{qp}\)&White-position scale and matched per-coordinate velocity scale&Corollary~\ref{cor:two-scale-white-window}\\
+\(\varepsilon,\eta,q,\mathcal V\)&Momentum energy correction, Young parameter, equivalence constant, Lyapunov energy&Proposition~\ref{prop:tightened}\\
+\(\cN,\mathfrak C_0\)&Mean squared particle force and tightened initial energy prefactor&Lemma~\ref{lem:conditional}, Corollary~\ref{cor:tightened-bootstrap}\\
+\(\mathfrak o(J),\xi_A\)&Matrix Lie algebra and infinitesimal congruence field&Appendix~\ref{app:law-counting}\\
+\bottomrule
+\end{longtable}
+\endgroup

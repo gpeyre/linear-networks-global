@@ -1,0 +1,94 @@
+\paragraph{Convergence of gradient descent}
+% \label{sec:gd}
+Unlike finite-width sampling of neurons, discretized gradient descent in the factor matrices $(U, V)$ with a finite step size changes the covariance evolution itself.
+We show that sufficiently small step sizes retain global linear convergence by controlling the accumulated conservation error.
+% \paragraph{Gradient descent on the factors}
+% \label{sec:discrete-factor-descent}
+We consider discrete-time gradient descent (GD) on the factor matrices, using an Euler discretization of \eqref{eq:mean-field-gradient-flow} with step size $\tau$.
+As in the gradient flow setting, define $\Sigma_k:=W_kW_k^\top/n$, $\Svu_k:=V_kU_k^\top/n$, and $\Delta_k:=\ell(\Svu_k)-\ell_\star$.
+Setting $E_k:=\nabla\ell(\Svu_k)$ and $G_k:=G_{E_k}$, the iterates read
+\begin{equation}\label{eq:gd-algorithm}
+ U_{k+1}=U_k-\tau E_k^\top V_k,\qquad
+ V_{k+1}=V_k-\tau E_kU_k.
+\end{equation}
+Equivalently, $W_{k+1}=W_k-n\tau\nabla_W\cL(U_k,V_k)$: this is GD for $n\cL$ with stepsize $\tau$, or for $\cL$ with stepsize $n\tau$.
+Writing $W_{k+1}=M_kW_k$ with $M_k:=\Id-\tau G_k$ gives
+\begin{equation}\label{eq:gd-covariance}
+ \Sigma_{k+1}=M_k\Sigma_kM_k
+ =\Sigma_k-\tau(G_k\Sigma_k+\Sigma_kG_k)+\tau^2G_k\Sigma_kG_k.
+\end{equation}
+The additional term $\tau^2G_k\Sigma_kG_k$ arises from taking the GD step in the individual factors $(U,V)$ and is absent from an Euler step taken directly on the Bures ODE.
+
+A positive initial support gap $g(\Sigma_0)$ still guarantees global linear convergence for sufficiently small step sizes $\tau$. 
+The condition on $\tau$ is given below and depends only on the initial covariance, initial loss gap, and loss parameters; it controls both 
+descent and the accumulated conservation error.
+
+\begin{theorem}[Small-step global convergence of factor descent]
+\label{thm:gd}\label{thm:discrete-bootstrap}
+Under Assumption~\ref{ass:loss}, let $\Sigma_0:=W_0W_0^\top/n$ satisfy
+$\gap{\Sigma_0}>0$, and suppose $\Delta_0>0$. Set
+$I_\star:=4\sqrt{\Delta_0/\kappa}/\gap{\Sigma_0}$. If
+\begin{equation}\label{eq:gd-step}
+ 0<\tau\le\tau_{\rm GD}:=\gap{\Sigma_0}e^{-2I_\star}\min\left\{
+ \tfrac{1}{4\norm{\Sigma_0}_{\op}\sqrt{L\Delta_0}
+              +9\sqrt2 L\norm{\Sigma_0}_{\op}^2e^{2I_\star}},\quad
+ \tfrac{\sqrt2-1}{4\Delta_0}
+ \right\},
+\end{equation}
+then, with $q:=1-\kappa\tau\gap{\Sigma_0}/\sqrt2\in(0,1)$ it holds that \(\Delta_k\le q^k\Delta_0\).
+The factors $W_k$ and covariance $\Sigma_k$ converge at rate $q^{k/2}$ to limits
+$W_\infty$ and $\Sigma_\infty\succeq0$, with
+$\rankop\Sigma_\infty=\rankop\Sigma_0$ and
+$\Svu_\infty\in\cS_\star$; explicit prefactors are given in
+\eqref{eq:gd-tails}.
+\end{theorem}
+
+The support-gap condition $g(\Sigma_0) > 0$ is implied by $\Sigma_0\succ0$, in which case $\Sigma_\infty$ is also positive definite.
+The threshold $\tau_{\rm GD}$ is positive for every initialization with $\gap{\Sigma_0}>0$ and $\Delta_0 < \infty$; no initial loss gap assumption or dimension-dependent term is needed.
+The first restriction ensures descent, and the second controls the accumulated conservation error.
+
+\begin{comment}
+\emph{Proof sketch.}
+\emph{Approximate conservation.}
+Transporting $J$ by the discrete factor updates \eqref{eq:gd-algorithm} transports the two inequalities defining the initial margins as well.
+The transported matrix differs from $J$ by a defect that starts at zero for every initialization and gains a contribution of order $\tau^2$ at each step.
+If the defect has operator norm at most $\eta<1$, then
+$\Suu_k\succeq(1-\eta)\aplus{\Sigma_0}\Id$ and
+$\Svv_k\succeq(1-\eta)\aminus{\Sigma_0}\Id$, so the sum of these spectral
+lower bounds remains positive: $(1-\eta)\gap{\Sigma_0}>0$
+(Lemma~\ref{lem:gd-support}).
+
+\emph{Descent and length.}
+Assuming an upper bound on $\norm{\Sigma_k}_{\op}$ and a sufficiently small
+conservation defect, $L$-smoothness of the predictor loss and the step-size restriction \eqref{eq:gd-step} give
+\(
+\Delta_{k+1}\le\Delta_k-
+\frac{\tau\gap{\Sigma_0}}{2\sqrt2}\norm{E_k}_{\F}^2
+\). 
+The PL inequality then yields geometric loss decay. Summing the decreases
+in $\Delta_k$ and $\sqrt{\Delta_k}$ bounds
+$\sum_k\tau\norm{E_k}_{\F}^2$ and $\sum_k\tau\norm{E_k}_{\F}$, respectively.
+
+\emph{Closing the bounds.}
+The bound on $\sum_k\tau\norm{E_k}_{\F}$ gives a uniform upper bound on
+$\norm{\Sigma_k}_{\op}$; together with the bound on
+$\sum_k\tau\norm{E_k}_{\F}^2$, it also controls the accumulated conservation defect.
+The stepsize restrictions keep both within the same bounds at the next
+iterate, closing an induction. Bounds on $\sum_{j=k}^{\infty}\tau\norm{E_j}_{\F}$ give convergence
+of the factors and covariance; see Appendix~\ref{app:gd}.\qed
+\end{comment}
+
+Appendix~\ref{app:gd} gives the explicit expression for $\tau_{\rm GD}$ when
+$\Sigma_0=\sigma^2\Id_m$ and a comparison with the step-size condition obtained
+by linearizing near an equilibrium (Remark~\ref{rem:gd-local}).
+Proposition~\ref{prop:gd-adjustable} shows that sufficiently small step sizes
+yield a certified loss-decay exponent arbitrarily close to $2\kappa\gap{\Sigma_0}$, the gradient-flow exponent in
+Theorem~\ref{thm:balanced-convergence}.
+Corollary~\ref{cor:sampled-gd} gives a step size chosen before sampling the
+factors, using the loss parameters and the bounds on the initial support gap,
+covariance norm, and loss gap from Theorem~\ref{thm:sampling-budgets}.
+
+%%% Local Variables:
+%%% mode: LaTeX
+%%% TeX-master: "../main"
+%%% End:

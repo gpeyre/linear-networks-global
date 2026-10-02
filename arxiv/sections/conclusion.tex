@@ -1,0 +1,13 @@
+\section{Conclusion}
+The present work addresses two-layer linear networks, making use of the exact closure of mean-field training on the neuron law covariance as a finite-dimensional Bures flow.
+This flow enjoys conservation laws that control the ellipticity of the predictor preconditioner through a conserved spectral support gap, yielding global linear convergence whenever this gap is positive.
+In particular, this is guaranteed for every positive-definite initial covariance and for smooth PL predictor losses. 
+We show that this guarantee survives finite-width sampling of neurons, and extends to discrete-time gradient descent in the factors through approximate versions of the same conservation laws.
+The covariance viewpoint clarifies two further extensions: for deep linear ResNets, the same conservation law holds layerwise and gives linear convergence conditional on bounded residual paths.
+Heavy-ball momentum dynamics close in the joint phase covariance, where conformal conservation laws and mechanical energy lead to an explicit damping certificate from general initial phase moments.
+The certificate includes two-scale white initializations without imposing a phase-covariance identity. Covariance conditioning is the common quantitative mechanism throughout our analysis.
+
+%%% Local Variables:
+%%% mode: LaTeX
+%%% TeX-master: "../main"
+%%% End:

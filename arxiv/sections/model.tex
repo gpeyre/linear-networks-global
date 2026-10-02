@@ -1,0 +1,46 @@
+% !TEX root = ../main.tex
+% Section: Finite-Width Setup and Predictor Loss
+
+\label{sec:model}
+
+\paragraph{Setup}
+Writing training in terms of the predictor separates the loss geometry
+from the nonconvex factorization.
+A width-$n$ two-layer linear network has factors
+$U:=(u_1,\ldots,u_n)\in\R^{d_u\times n}$ and
+$V:=(v_1,\ldots,v_n)\in\R^{d_v\times n}$.
+Write $m:=d_u+d_v$ and $W:=\binom UV$. Its predictor is
+$\Svu:=VU^\top/n$, and its factor objective is
+$\cL(U,V):=\ell(VU^\top/n)$ for a differentiable predictor loss
+$\ell:\R^{d_v\times d_u}\to\R$.
+For example, if a data distribution $\rho$ on pairs $(z,y)$ satisfies
+$y=\Svu_\star z$ for a teacher $\Svu_\star$, squared regression loss is
+\[
+  \textstyle \ell_{\rm quad}(\Svu):=\frac12\int\norm{(\Svu-\Svu_\star)z}^2\,\mathrm{d}\rho(z,y).
+\]
+More generally, a self-adjoint positive semidefinite operator
+$\quadH$ on $\R^{d_v\times d_u}$ defines a quadratic loss
+$\ell(S):=\frac12\ip{\quadH[S-\Svu_\star]}{S-\Svu_\star}$.
+The regression example corresponds to $\quadH[X]=XC_z$, where
+$C_z:=\int zz^\top\,\dd\rho(z,y)$ is the input second moment.
+
+We state the assumptions on the predictor loss: assume throughout that \(\ell:\R^{d_v\times d_u}\to\R\) is \(C^1\) and bounded below, and write \(\ell_\star:=\inf_S\ell(S)\).
+
+\begin{assumption}[Smooth PL predictor loss]
+\label{ass:predictor-loss}\label{ass:loss}
+There exist constants \(L>0\) and \(\kappa>0\) such that the loss
+\(\ell\) is \(L\)-smooth and satisfies the \(\kappa\)-Polyak--\L{}ojasiewicz
+inequality: \(\norm{\nabla\ell(S)-\nabla\ell(S')}_{\F}\le L\norm{S-S'}_{\F}\) for all \(S,S'\),
+and \(\norm{\nabla\ell(S)}_{\F}^2 \ge 2\kappa\bigl(\ell(S)-\ell_\star\bigr)\) for all \(S\).
+\end{assumption}
+
+We take \(0<\kappa\le L\), as holds automatically for any nonconstant loss
+satisfying Assumption~\ref{ass:loss}.
+For a nonzero quadratic Hessian $\quadH\succeq0$, one can take
+$L=\lambda_{\max}(\quadH)$ and $\kappa=\lambda_{\min}^{+}(\quadH)$.
+The operator $\quadH$ may have a nontrivial kernel.
+
+%%% Local Variables:
+%%% mode: LaTeX
+%%% TeX-master: "../main.tex"
+%%% End:

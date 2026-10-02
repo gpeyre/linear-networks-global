@@ -1,0 +1,37 @@
+{
+  "quadratic_loss_L_kappa": [
+    1,
+    1
+  ],
+  "covariance_diagonal": [
+    0.7,
+    2.2,
+    1.5,
+    3.1
+  ],
+  "target_entries": 0.05,
+  "signed_margins": [
+    0.7000000000000001,
+    1.4999999999999998
+  ],
+  "flow_exponent": 4.3999999999999995,
+  "maximum_spectral_law_error": 2.5863755581667647e-12,
+  "gd_stepsize": 0.010695498363166371,
+  "gd_steps": 281,
+  "maximum_signature_defect": 1.5810463971609077e-05,
+  "momentum_position_diagonal": [
+    200.0,
+    240.0
+  ],
+  "momentum_velocity_diagonal": [
+    2e-05,
+    0.0
+  ],
+  "momentum_teacher": 0.01,
+  "damping": 1.0,
+  "budget": 0.27,
+  "energy0": 6e-05,
+  "momentum_rate": 0.07066233983992645,
+  "momentum_deformation_bound": 0.049743660907633436,
+  "all_assertions_passed": true
+}
