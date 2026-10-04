@@ -54,6 +54,11 @@ The bundled `main.bbl` makes BibTeX unnecessary for an unchanged archive.
 After editing citations or the bibliography, run `bibtex main` after the first
 LaTeX pass, then run LaTeX twice more.
 
+Undefined-reference and citation warnings on the first pass are normal and
+should disappear after the subsequent passes. Errors such as `Missing {
+inserted` or `Undefined control sequence` are not normal; the commands above
+stop immediately on errors instead of producing a partial PDF.
+
 ## Relationship to the Conference Version
 
 This is a standalone preprint version of the manuscript in `paper/`, with

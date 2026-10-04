@@ -31,12 +31,12 @@ on \(\mathcal M_\alpha\), given by
 \end{equation}
 On this leaf, the Bures dynamics close on the predictor:
 \begin{equation}\label{eq:intrinsic-hyperbolic-dynamics}
- \dot\Svu=-E((\Svu)^\top\Svu+\alpha^2\Id)^{1/2}
+ \dSvu=-E((\Svu)^\top\Svu+\alpha^2\Id)^{1/2}
        -(\Svu(\Svu)^\top+\alpha^2\Id)^{1/2}E,
  \qquad E:=\nabla\ell(\Svu).
 \end{equation}
 For \(d_u=d_v=1\), this is
-\(\dot\Svu=-2\sqrt{(\Svu)^2+\alpha^2}\,\ell'(\Svu)\).
+\(\dSvu=-2\sqrt{(\Svu)^2+\alpha^2}\,\ell'(\Svu)\).
 \end{proposition}
 \begin{proof}
 Expanding \eqref{eq:intrinsic-hi} gives
@@ -178,7 +178,7 @@ Neither choice is needed for convergence: the general theorem controls
 Even on CSI, the two cross blocks \(\Svu,\Sqp\) do not generally form a
 closed state. With \(\theta=1,C=0\), choose \(A=\Id_2\) or \(2\Id_2\)
 and \(\Svel=A^{-1}\). Both have
-\(\Svu=\Sqp=\dot\Svu=0\), yet
-\(\ddot\Svu=-2E\) or \(-4E\) for the same nonzero scalar loss gradient.
+\(\Svu=\Sqp=\dSvu=0\), yet
+\(\ddSvu=-2E\) or \(-4E\) for the same nonzero scalar loss gradient.
 Thus the full position block remains part of the intrinsic variables.
 \end{remark}

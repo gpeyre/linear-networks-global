@@ -32,6 +32,15 @@
 \newcommand{\Suv}{\Sigma^{uv}}
 \newcommand{\Svu}{\Sigma^{vu}}
 \newcommand{\Svv}{\Sigma^v}
+% Covariance derivatives accent the base, not the block superscript.
+\newcommand{\dSuu}{\dot{\Sigma}^u}
+\newcommand{\dSuv}{\dot{\Sigma}^{uv}}
+\newcommand{\dSvu}{\dot{\Sigma}^{vu}}
+\newcommand{\dSvv}{\dot{\Sigma}^v}
+\newcommand{\ddSuu}{\ddot{\Sigma}^u}
+\newcommand{\ddSuv}{\ddot{\Sigma}^{uv}}
+\newcommand{\ddSvu}{\ddot{\Sigma}^{vu}}
+\newcommand{\ddSvv}{\ddot{\Sigma}^v}
 % Group the tilde base so an outer derivative accent excludes the scripts.
 \newcommand{\tSuu}{{\widetilde{\Sigma}}^u}
 \newcommand{\tSuv}{{\widetilde{\Sigma}}^{uv}}
@@ -44,34 +53,8 @@
 \newcommand{\Sqq}{\Sigma^q}
 \newcommand{\Spos}{\Sigma^{(u,v)}}
 \newcommand{\Svel}{\Sigma^{(p,q)}}
-
-% Accent only the base of these block macros; preserve all other arguments.
-% Use \dot\Svu_t or \dot{\Svu}_t, keeping the subscript outside the argument.
-\ExplSyntaxOn
-\cs_new_eq:NN \cov_original_dot:n  \dot
-\cs_new_eq:NN \cov_original_ddot:n \ddot
-\cs_new_protected:Npn \cov_accent:Nn #1#2
-  {
-    \tl_if_single_token:nTF {#2}
-      {
-        \clist_if_in:nnTF
-          {
-            \Suu, \Suv, \Svu, \Svv,
-            \tSuu, \tSuv, \tSvu, \tSvv,
-            \Sppos, \Sqp, \Squ, \Svp, \Sqq,
-            \Spos, \Svel
-          }
-          {#2}
-          { \expandafter #1 #2 }
-          { #1 {#2} }
-      }
-      { #1 {#2} }
-  }
-\RenewDocumentCommand{\dot}{m}
-  { \cov_accent:Nn \cov_original_dot:n {#1} }
-\RenewDocumentCommand{\ddot}{m}
-  { \cov_accent:Nn \cov_original_ddot:n {#1} }
-\ExplSyntaxOff
+\newcommand{\dSpos}{\dot{\Sigma}^{(u,v)}}
+\newcommand{\dSvel}{\dot{\Sigma}^{(p,q)}}
 
 \newcommand{\Jcan}{J_{\mathrm c}}
 \newcommand{\Mob}{\mathsf M}

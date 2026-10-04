@@ -69,9 +69,9 @@ The first $m$ trace powers determine the characteristic polynomial.
 For later use, the block equations are
 \begin{equation}\label{eq:block-flow-general}
  \begin{aligned}
- \dot\Suu_t&=-\Suv_tE_t-E_t^\top\Svu_t,\quad
- \dot\Svv_t=-\Svu_tE_t^\top-E_t\Suv_t,\quad
- \dot\Svu_t&=-E_t\Suu_t-\Svv_tE_t.
+ \dSuu_t&=-\Suv_tE_t-E_t^\top\Svu_t,\quad
+ \dSvv_t=-\Svu_tE_t^\top-E_t\Suv_t,\quad
+ \dSvu_t&=-E_t\Suu_t-\Svv_tE_t.
  \end{aligned}
 \end{equation}
 \end{proof}
@@ -197,7 +197,7 @@ rank as $\Sigma_0$ and is optimal by \eqref{eq:gf-rate}.
 The singular-value bound for congruence gives the claimed positive
 eigenvalue floor, without requiring full rank.
 Directly in predictor Frobenius norm,
-$\norm{\dot\Svu_t}_{\F}\le2B_\infty\norm{E_t}_{\F}$;
+$\norm{\dSvu_t}_{\F}\le2B_\infty\norm{E_t}_{\F}$;
 its integral proves \eqref{eq:gf-predictor-tail} without a dimension factor.
 Finally $\norm{\Phi_t-\Phi_\infty}_{\op}\le e^{I_0}I_0e^{-\kappa \gap{\Sigma_0}t}$.
 Coupling the two characteristic images of the same initial particle gives
@@ -813,7 +813,7 @@ In residual mean-field time the particle equations are
 $(\dot u_{s,i},\dot v_{s,i})
 =-(\widetilde E_s^\top v_{s,i},\widetilde E_su_{s,i})$.
 The cross block of \eqref{eq:resnet-layer-bures} is therefore
-$\dot\Svu_s=-\widetilde E_s\Suu_s-\Svv_s\widetilde E_s$.
+$\dSvu_s=-\widetilde E_s\Suu_s-\Svv_s\widetilde E_s$.
 
 In the finite-depth setting of Theorem~\ref{thm:resnet-finite}, put
 $\overline{\sigma}_S:=(1+B/S)^{S-1}$ and
@@ -1032,15 +1032,15 @@ Taking its second moments gives the block system
 \begin{equation}
 \label{eq:phase-block-ode}
 \begin{aligned}
-\dot\Spos_t&=\Xi_t+\Xi_t^\top,\qquad
+\dSpos_t&=\Xi_t+\Xi_t^\top,\qquad
 \dot\Xi_t=\Svel_t-\Spos_tG_t-\gamma\Xi_t,\\
-\dot\Svel_t&=-G_t\Xi_t-\Xi_t^\top G_t-2\gamma\Svel_t.
+\dSvel_t&=-G_t\Xi_t-\Xi_t^\top G_t-2\gamma\Svel_t.
 \end{aligned}
 \end{equation}
 In particular, the predictor velocity and acceleration are
 \begin{equation}\label{eq:predictor-speed}
- \dot\Svu=\Sigma^{qu}+\Sigma^{vp},\qquad
- \ddot\Svu+\gamma\dot\Svu=2\Sqp-E\Suu-\Svv E.
+ \dSvu=\Sigma^{qu}+\Sigma^{vp},\qquad
+ \ddSvu+\gamma\dSvu=2\Sqp-E\Suu-\Svv E.
 \end{equation}
 
 \begin{proof}[Proof of Proposition~\ref{prop:phase-laws}]
@@ -1129,16 +1129,16 @@ Lemma~\ref{lem:pl}, and applying Cauchy--Schwarz to the phase law, gives
 \end{equation}
 All second derivatives below are understood almost everywhere. Lipschitz
 continuity of $\nabla\ell$ implies that $E_t$ is locally absolutely
-continuous and $\norm{\dot E_t}_{\F}\le L\norm{\dot\Svu_t}_{\F}$.
+continuous and $\norm{\dot E_t}_{\F}\le L\norm{\dSvu_t}_{\F}$.
 Differentiating \eqref{eq:predictor-speed} gives
 \[
  \ddot\Delta=H-\cN-\gamma\dot\Delta,\qquad
- H:=\ip{\dot E}{\dot\Svu}+2\ip E{\Sqp}\le\rho\mathcal{K}.
+ H:=\ip{\dot E}{\dSvu}+2\ip E{\Sqp}\le\rho\mathcal{K}.
 \]
 For the last bound, positive phase blocks give
 $\norm{\Sigma^{qu}}_{\F}^2\le b\tr\Sigma^q$ and
 $\norm{\Sigma^{vp}}_{\F}^2\le b\tr\Sigma^p$, hence
-$\norm{\dot\Svu}_{\F}^2\le4b\mathcal{K}$. Also
+$\norm{\dSvu}_{\F}^2\le4b\mathcal{K}$. Also
 $\norm{\Sqp}_{\F}\le\sqrt{\tr\Sigma^q\tr\Sigma^p}\le\mathcal{K}$ and
 $\norm E_{\F}\le\sqrt{2L\cE_0}$.
 
