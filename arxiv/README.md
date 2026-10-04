@@ -1,15 +1,15 @@
 # arXiv Manuscript
 
 **Global Exponential Convergence of Two-Layer Linear Network Training**  
-Gabriel Peyré (`gabriel.peyre@ens.fr`) and Stephen Zhang (`syz@syz.id.au`)
+Stephen Zhang (`syz@syz.id.au`) and Gabriel Peyré (`gabriel.peyre@ens.fr`)
 
 Author affiliations:
 
+- Stephen Zhang: Flatiron Institute and NYU Center for Data Science, as listed
+  on [his homepage](https://syz.id.au/).
 - Gabriel Peyré: CNRS, ENS, PSL Univ., as listed on page 1 of
   [Token Sample Complexity of Attention](https://arxiv.org/pdf/2512.10656).
   Email verified against [his contact page](https://www.gpeyre.com/contact/).
-- Stephen Zhang: Flatiron Institute and NYU Center for Data Science, as listed
-  on [his homepage](https://syz.id.au/).
 
 This directory is self-contained. It includes the manuscript, appendices,
 bibliography, local styles, and all six figures. No files elsewhere in the

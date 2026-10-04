@@ -1,14 +1,14 @@
 # Supporting Material
 
 This repository accompanies **Global Exponential Convergence of Two-Layer
-Linear Network Training** by Gabriel Peyré and Stephen Zhang. The [paper PDF](paper/paper.pdf)
+Linear Network Training** by Stephen Zhang and Gabriel Peyré. The [paper PDF](paper/paper.pdf)
 and its LaTeX sources are in `paper/`; `arxiv/` contains a standalone preprint.
 
 ## Citation
 
 ```bibtex
-@misc{peyrezhang2026global,
-  author = {Peyr{\'e}, Gabriel and Zhang, Stephen},
+@misc{zhangpeyre2026global,
+  author = {Zhang, Stephen and Peyr{\'e}, Gabriel},
   title = {Global Exponential Convergence of Two-Layer Linear Network Training},
   year = {2026},
   note = {Preprint}
